@@ -1,0 +1,69 @@
+﻿SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+CREATE DATABASE IF NOT EXISTS `comunest` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `comunest`;
+
+
+CREATE TABLE usuario (
+        id_user INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(30),
+        email VARCHAR(40),
+        pass VARCHAR(100),
+        foto_perfil VARCHAR(100),
+        nivel TINYINT,
+        activo TINYINT
+);
+
+
+CREATE TABLE casa (
+        id_casa INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(30)
+);
+
+
+CREATE TABLE casa_user (
+        id_casa INT,
+        id_user INT,
+        FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE,
+        FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE
+);
+
+
+CREATE TABLE mes (
+        id_mes INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(30),
+        id_casa INT,
+        total INT,
+        resuelto TINYINT,
+        FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE
+);
+
+
+CREATE TABLE gasto (
+        PRIMARY KEY (id_user, id_casa, id_mes),
+        nombre VARCHAR(30),
+        descripcion VARCHAR(300),
+        importe INT,
+        FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE,
+        FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE,
+        FOREIGN KEY (id_mes) REFERENCES mes(id_mes) ON DELETE CASCADE
+);
+
+
+CREATE TABLE comentario (
+        PRIMARY KEY (id_user, id_casa),
+        contenido VARCHAR(400),
+        FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE,
+        FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE
+);
+
+
+CREATE TABLE Token (
+        token VARCHAR(15),
+        validez TINYINT,
+        id_user INT PRIMARY KEY,
+        FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE
+);
