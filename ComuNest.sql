@@ -61,7 +61,7 @@ CREATE TABLE comentario (
 );
 
 
-CREATE TABLE Token (
+CREATE TABLE token (
         token VARCHAR(15),
         validez TINYINT,
         id_user INT PRIMARY KEY,
