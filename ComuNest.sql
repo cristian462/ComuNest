@@ -47,6 +47,9 @@ CREATE TABLE gasto (
         nombre VARCHAR(30),
         descripcion VARCHAR(300),
         importe INT,
+        id_user INT,
+        id_casa INT,
+        id_mes INT,
         FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE,
         FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE,
         FOREIGN KEY (id_mes) REFERENCES mes(id_mes) ON DELETE CASCADE
@@ -55,6 +58,8 @@ CREATE TABLE gasto (
 
 CREATE TABLE comentario (
         PRIMARY KEY (id_user, id_casa),
+        id_user INT,
+        id_casa INT,
         contenido VARCHAR(400),
         FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE,
         FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE
@@ -67,3 +72,34 @@ CREATE TABLE token (
         id_user INT PRIMARY KEY,
         FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE
 );
+
+
+
+
+
+
+INSERT INTO usuario (nombre, email, pass, foto_perfil, nivel, activo)
+VALUES ('Juan', 'juan@example.com', '123456', 'perfil_juan.jpg', 1, 1),
+       ('María', 'maria@example.com', 'password', 'perfil_maria.jpg', 1, 1),
+       ('Pedro', 'pedro@example.com', 'pass123', 'perfil_pedro.jpg', 1, 1);
+
+INSERT INTO casa (nombre)
+VALUES ('Casa A'),
+       ('Casa B'),
+       ('Casa C');
+
+INSERT INTO casa_user (id_casa, id_user)
+VALUES (1, 1),  -- Juan en Casa A
+       (1, 2),  -- María en Casa A
+       (2, 3);  -- Pedro en Casa B
+
+INSERT INTO mes (nombre, id_casa, total, resuelto)
+VALUES ('Enero', 1, 1500, 0),
+       ('Febrero', 1, 1200, 0),
+       ('Marzo', 2, 1800, 1);  -- Marzo en Casa B ya resuelto
+
+INSERT INTO gasto (nombre, descripcion, importe, id_user, id_casa, id_mes)
+VALUES ('Comida', 'Compra mensual de alimentos', 300, 1, 1, 1),
+       ('Alquiler', 'Pago del alquiler', 500, 2, 1, 1),
+       ('Luz', 'Factura de luz', 100, 3, 2, 3);  -- Pedro pagó la luz en Marzo
+

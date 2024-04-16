@@ -1,0 +1,9 @@
+Así creamos los containers y ejecutamos el script sql en la base de datos:
+________________________________________________________________________________________
+
+
+docker run --name mysql-container -p 3306:3306 -e MYSQL_ROOT_PASSWORD=basededatos -d mysql:latest 
+
+docker run --name phpmyadmin-container -d --link mysql-container:db -p 8090:80 phpmyadmin/phpmyadmin
+
+docker exec -i mysql-container mysql -uroot -pbasededatos < C:\Users\cptorres\TFG\ComuNest\ComuNest.sql
