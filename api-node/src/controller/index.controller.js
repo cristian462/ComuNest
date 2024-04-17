@@ -40,14 +40,21 @@ controller.registro = async (req, res) =>{
 	try{
 		const {nombre, email, pass, foto_perfil} = req.body;
 		const hash = await bcrypt.encrypt(pass);
-		db.query(`INSERT INTO usuario (nombre,email,pass,foto_perfil,nivel,activo)
-				VALUES (?,?,?,?,1,1);`,
+		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{
+			if(rows.length === 0){
+				db.query(`INSERT INTO usuario (nombre,email,pass,foto_perfil,nivel)
+				VALUES (?,?,?,?,1);`,
 				[nombre,email,hash,foto_perfil],(err,rows)=>{
 					if(err) {
 						res.status(400).send(err.message);
 					}
+
 					res.status(201).json({id : rows.insertId});
 				});
+			}else{
+				res.json({msg : "El usuario ya existe"});
+			}
+		});	
 	} catch(err){
 		res.status(500).send(err.message);
 	}

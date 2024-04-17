@@ -7,3 +7,5 @@ docker run --name mysql-container -p 3306:3306 -e MYSQL_ROOT_PASSWORD=basededato
 docker run --name phpmyadmin-container -d --link mysql-container:db -p 8090:80 phpmyadmin/phpmyadmin
 
 docker exec -i mysql-container mysql -uroot -pbasededatos < C:\Users\cptorres\TFG\ComuNest\ComuNest.sql
+
+(el último comando solo funciona en cmd y es la ruta al script sql)
