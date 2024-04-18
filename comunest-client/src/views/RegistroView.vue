@@ -137,24 +137,31 @@ import {ref, watch} from "vue";
       };
       formData.append('datos',JSON.stringify(jsonData));
 
-      console.log(formData);
-      const response = await fetch('http://localhost:4000/registro',{
-        method: 'POST',
-        body: formData
-      });
+      this.$axios.post('http://localhost:4000/registro',formData).then((response)=>{
+        console.log(response);
+      })
 
-      if(!response.ok){
-        throw new Error('Error al enviar la solicitud');
-      }
 
-      const data = await response.json();
-      console.log(data);
+
+      // console.log(formData);
+      // const response = await fetch('http://localhost:4000/registro',{
+      //   method: 'POST',
+      //   contentType:"application/json" ,
+      //   body: formData
+      // });
+
+      // if(!response.ok){
+      //   throw new Error('Error al enviar la solicitud');
+      // }
+
+      // const data = await response.json();
+      // console.log(data);
     }catch(err){
       console.log(err);
-    } 
+    }
   }
 
-   
+
 
 </script>
 

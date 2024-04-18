@@ -31,7 +31,7 @@ controller.login = async (req, res) =>{
 						//éxito
 						res.json({login: 2});
 					}
-				 } 
+				 }
 				  )
 	}catch(err){
 		res.status(500).send(err.message);
@@ -40,8 +40,9 @@ controller.login = async (req, res) =>{
 
 controller.registro = async (req, res) =>{
 	try{
-		const {nombre, email, pass} = req.body.datos;
-		let foto_perfil = req.file ? req.file.originalname : 'unknown.jpg';
+		console.log(req.file);
+		const {nombre, email, pass, foto_perfil} = req.body;
+		foto_perfil = req.file ? req.file.originalname : 'unknown.jpg';
 		if(req.file){
 			const extension = path.extname(req.file.originalname);
 			const nombreunico = `${Date.now()}-${Math.round(Math.random()*1E9)}${extension}`;
@@ -63,7 +64,7 @@ controller.registro = async (req, res) =>{
 			}else{
 				res.json({msg : "El usuario ya existe"});
 			}
-		});	
+		});
 	} catch(err){
 		res.status(500).send(err.message);
 	}
@@ -72,7 +73,7 @@ controller.registro = async (req, res) =>{
 controller.fotoperfil = (req,res) =>{
 	try{
 		console.log(req.file.filename);
-		
+
 		res.send('Termina');
 	}catch(err){
 		console.log(err.message);

@@ -13,8 +13,7 @@ CREATE TABLE usuario (
         email VARCHAR(40),
         pass VARCHAR(100),
         foto_perfil VARCHAR(100),
-        nivel TINYINT,
-        activo TINYINT
+        nivel TINYINT
 );
 
 
@@ -66,22 +65,14 @@ CREATE TABLE comentario (
 );
 
 
-CREATE TABLE token (
-        token VARCHAR(15),
-        validez TINYINT,
-        id_user INT PRIMARY KEY,
-        FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE
-);
 
 
 
 
-
-
-INSERT INTO usuario (nombre, email, pass, foto_perfil, nivel, activo)
-VALUES ('Juan', 'juan@example.com', '123456', 'perfil_juan.jpg', 1, 1),
-       ('Maria', 'maria@example.com', 'password', 'perfil_maria.jpg', 1, 1),
-       ('Pedro', 'pedro@example.com', 'pass123', 'perfil_pedro.jpg', 1, 1);
+INSERT INTO usuario (nombre, email, pass, foto_perfil, nivel)
+VALUES ('Juan', 'juan@example.com', '123456', 'perfil_juan.jpg', 1),
+       ('Maria', 'maria@example.com', 'password', 'perfil_maria.jpg', 1),
+       ('Pedro', 'pedro@example.com', 'pass123', 'perfil_pedro.jpg', 1);
 
 INSERT INTO casa (nombre)
 VALUES ('Casa A'),
@@ -91,7 +82,7 @@ VALUES ('Casa A'),
 INSERT INTO casa_user (id_casa, id_user)
 VALUES (1, 1),
        (1, 2),
-       (2, 3);  
+       (2, 3);
 
 INSERT INTO mes (nombre, id_casa, total, resuelto)
 VALUES ('Enero', 1, 1500, 0),
