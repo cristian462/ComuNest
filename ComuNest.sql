@@ -57,7 +57,7 @@ CREATE TABLE gasto (
 
 
 CREATE TABLE comentario (
-        PRIMARY KEY (id_user, id_casa),
+        id_coment INT AUTO_INCREMENT PRIMARY KEY,
         id_user INT,
         id_casa INT,
         contenido VARCHAR(400),
