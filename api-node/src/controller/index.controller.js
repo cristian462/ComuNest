@@ -1,5 +1,7 @@
 const db = require('../database/conexion');
+const path = require('path');
 const bcrypt = require('../helper/handlerBcrypt');
+const saveFile = require('../helper/handlerSaveImage');
 const controller = {};
 
 controller.index = (req, res) =>{
@@ -39,9 +41,12 @@ controller.login = async (req, res) =>{
 controller.registro = async (req, res) =>{
 	try{
 		const {nombre, email, pass} = req.body;
-		let foto_perfil = req.file ? req.file.filename : 'unknown.jpg';
+		let foto_perfil = req.file ? req.file.originalname : 'unknown.jpg';
 		if(req.file){
-			foto_perfil = req.file.filename;
+			const extension = path.extname(req.file.originalname);
+			const nombreunico = `${Date.now()}-${Math.round(Math.random()*1E9)}${extension}`;
+			foto_perfil = nombreunico;
+			saveFile.saveImage(req.file,'perfil',foto_perfil);
 		}
 		const hash = await bcrypt.encrypt(pass);
 		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{
