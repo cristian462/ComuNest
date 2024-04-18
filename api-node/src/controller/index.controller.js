@@ -38,7 +38,11 @@ controller.login = async (req, res) =>{
 
 controller.registro = async (req, res) =>{
 	try{
-		const {nombre, email, pass, foto_perfil} = req.body;
+		const {nombre, email, pass} = req.body;
+		let foto_perfil = req.file ? req.file.filename : 'unknown.jpg';
+		if(req.file){
+			foto_perfil = req.file.filename;
+		}
 		const hash = await bcrypt.encrypt(pass);
 		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{
 			if(rows.length === 0){
@@ -57,6 +61,16 @@ controller.registro = async (req, res) =>{
 		});	
 	} catch(err){
 		res.status(500).send(err.message);
+	}
+};
+
+controller.fotoperfil = (req,res) =>{
+	try{
+		console.log(req.file.filename);
+		
+		res.send('Termina');
+	}catch(err){
+		console.log(err.message);
 	}
 };
 
