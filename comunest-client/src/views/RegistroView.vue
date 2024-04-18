@@ -4,9 +4,9 @@
         <h1 class="fw-bold mb-0 fs-2 mb-4">Registrarse gratuitamente</h1>
     </div>
     <div class="body p-5 pt-0">
-        <div>
-          <input type="file" name="imagen_perfil">
-        </div>
+            <label for=""></label>
+            <div class="container d-flex justify-content-end my-2">
+            </div>
             <div class="input-group">
                 <span class="input-group-text">@</span>
                 <div class="form-floating">
@@ -33,13 +33,13 @@
                     minúscula, 1 número, 1 carácter. Entre 8 y 16 caracteres</span>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control rounded-3" :class="pass2mal" placeholder="Password" v-model="pass2" required/>
+                <input type="password" class="form-control rounded-3" :class="pass2mal" placeholder="Password" v-model="user.pass2" required/>
                 <label for="pass2">Repita Contraseña*</label>
             </div>
 
             <div id="pass2Mal" class="mb-5 text-danger">{{ msjpass2 }}</div>
 
-            <label class="mb-2" for="terminos"><input type="checkbox" value="1" v-model="condiciones" /> <small
+            <label class="mb-2" for="terminos"><input type="checkbox" value="1" v-model="user.condiciones" /> <small
                     class="text-body-secondary">Registrándote aceptas los términos y condiciones.*</small></label>
             <button class="w-100 my-2 btn btn-lg rounded-3 btn-primary" @click="submit">Registrarse</button>
     </div>
@@ -56,10 +56,9 @@ import {ref, watch} from "vue";
     nombre: '',
     correo: '',
     pass1: '',
+    pass2: '',
+    condiciones:false
   });
-
-    let pass2 =  ref('');
-    let condiciones = ref(false);
 
   let msjpass2 = ref('');
   let pass1mal = ref('');
@@ -102,7 +101,7 @@ import {ref, watch} from "vue";
     }
     });
 
-  const submit = async ()=>{
+  const submit = ()=>{
     if(user.value.condiciones == false){
       alert("Debes aceptar los términos y condiciones de uso");
       return false;
@@ -120,6 +119,7 @@ import {ref, watch} from "vue";
       return false;
     }
 
+<<<<<<< HEAD
     try{
       const formData = new FormData();
 
@@ -159,6 +159,9 @@ import {ref, watch} from "vue";
     }catch(err){
       console.log(err);
     }
+=======
+    fetch("localhost:4000")
+>>>>>>> parent of c771982 (hecha vista del registro pero la subida de  imagenes no funciona)
   }
 
 
