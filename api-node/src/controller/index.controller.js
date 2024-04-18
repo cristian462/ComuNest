@@ -40,7 +40,7 @@ controller.login = async (req, res) =>{
 
 controller.registro = async (req, res) =>{
 	try{
-		const {nombre, email, pass} = req.body;
+		const {nombre, email, pass} = req.body.datos;
 		let foto_perfil = req.file ? req.file.originalname : 'unknown.jpg';
 		if(req.file){
 			const extension = path.extname(req.file.originalname);
@@ -48,6 +48,7 @@ controller.registro = async (req, res) =>{
 			foto_perfil = nombreunico;
 			saveFile.saveImage(req.file,'perfil',foto_perfil);
 		}
+
 		const hash = await bcrypt.encrypt(pass);
 		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{
 			if(rows.length === 0){
@@ -57,8 +58,7 @@ controller.registro = async (req, res) =>{
 					if(err) {
 						res.status(400).send(err.message);
 					}
-
-					res.status(201).json({id : rows.insertId});
+					res.status(201).json({success : 1});
 				});
 			}else{
 				res.json({msg : "El usuario ya existe"});

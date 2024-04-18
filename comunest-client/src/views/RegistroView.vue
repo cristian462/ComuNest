@@ -4,9 +4,9 @@
         <h1 class="fw-bold mb-0 fs-2 mb-4">Registrarse gratuitamente</h1>
     </div>
     <div class="body p-5 pt-0">
-            <label for=""></label>
-            <div class="container d-flex justify-content-end my-2">
-            </div>
+        <div>
+          <input type="file" name="imagen_perfil">
+        </div>
             <div class="input-group">
                 <span class="input-group-text">@</span>
                 <div class="form-floating">
@@ -33,13 +33,13 @@
                     minúscula, 1 número, 1 carácter. Entre 8 y 16 caracteres</span>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control rounded-3" :class="pass2mal" placeholder="Password" v-model="user.pass2" required/>
+                <input type="password" class="form-control rounded-3" :class="pass2mal" placeholder="Password" v-model="pass2" required/>
                 <label for="pass2">Repita Contraseña*</label>
             </div>
 
             <div id="pass2Mal" class="mb-5 text-danger">{{ msjpass2 }}</div>
 
-            <label class="mb-2" for="terminos"><input type="checkbox" value="1" v-model="user.condiciones" /> <small
+            <label class="mb-2" for="terminos"><input type="checkbox" value="1" v-model="condiciones" /> <small
                     class="text-body-secondary">Registrándote aceptas los términos y condiciones.*</small></label>
             <button class="w-100 my-2 btn btn-lg rounded-3 btn-primary" @click="submit">Registrarse</button>
     </div>
@@ -56,9 +56,10 @@ import {ref, watch} from "vue";
     nombre: '',
     correo: '',
     pass1: '',
-    pass2: '',
-    condiciones:false
   });
+
+    let pass2 =  ref('');
+    let condiciones = ref(false);
 
   let msjpass2 = ref('');
   let pass1mal = ref('');
@@ -101,7 +102,7 @@ import {ref, watch} from "vue";
     }
     });
 
-  const submit = ()=>{
+  const submit = async ()=>{
     if(user.value.condiciones == false){
       alert("Debes aceptar los términos y condiciones de uso");
       return false;
@@ -119,7 +120,38 @@ import {ref, watch} from "vue";
       return false;
     }
 
-    fetch("localhost:4000")
+    try{
+      const formData = new FormData();
+
+      const inputFile = document.querySelector('input[name="imagen_perfil"]');
+      const archivo = inputFile.files[0];
+
+      console.log(archivo);
+
+      formData.append('imagen_perfil', archivo);
+
+      const jsonData = {
+        nombre: user.value.nombre,
+        correo: user.value.correo,
+        pass: user.value.pass1
+      };
+      formData.append('datos',JSON.stringify(jsonData));
+
+      console.log(formData);
+      const response = await fetch('http://localhost:4000/registro',{
+        method: 'POST',
+        body: formData
+      });
+
+      if(!response.ok){
+        throw new Error('Error al enviar la solicitud');
+      }
+
+      const data = await response.json();
+      console.log(data);
+    }catch(err){
+      console.log(err);
+    } 
   }
 
    
