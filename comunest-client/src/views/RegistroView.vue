@@ -119,49 +119,28 @@ import {ref, watch} from "vue";
       return false;
     }
 
-<<<<<<< HEAD
     try{
-      const formData = new FormData();
-
-      const inputFile = document.querySelector('input[name="imagen_perfil"]');
-      const archivo = inputFile.files[0];
-
-      console.log(archivo);
-
-      formData.append('imagen_perfil', archivo);
-
       const jsonData = {
         nombre: user.value.nombre,
         correo: user.value.correo,
         pass: user.value.pass1
       };
+
+      const formData = new FormData();
       formData.append('datos',JSON.stringify(jsonData));
 
-      this.$axios.post('http://localhost:4000/registro',formData).then((response)=>{
-        console.log(response);
-      })
+      const response = fetch('http://localhost:4000/registro',{
+        method: 'POST',
+        contentType:"application/json" ,
+        body: formData
+      });
 
-
-
-      // console.log(formData);
-      // const response = await fetch('http://localhost:4000/registro',{
-      //   method: 'POST',
-      //   contentType:"application/json" ,
-      //   body: formData
-      // });
-
-      // if(!response.ok){
-      //   throw new Error('Error al enviar la solicitud');
-      // }
-
-      // const data = await response.json();
-      // console.log(data);
+      if(!response.ok){
+        throw new Error('Error al enviar la solicitud');
+      }
     }catch(err){
       console.log(err);
     }
-=======
-    fetch("localhost:4000")
->>>>>>> parent of c771982 (hecha vista del registro pero la subida de  imagenes no funciona)
   }
 
 

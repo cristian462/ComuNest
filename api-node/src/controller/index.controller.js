@@ -40,26 +40,13 @@ controller.login = async (req, res) =>{
 
 controller.registro = async (req, res) =>{
 	try{
-<<<<<<< HEAD
-		console.log(req.file);
-		const {nombre, email, pass, foto_perfil} = req.body;
-		foto_perfil = req.file ? req.file.originalname : 'unknown.jpg';
-=======
 		const {nombre, email, pass} = req.body;
-		let foto_perfil = req.file ? req.file.originalname : 'unknown.jpg';
->>>>>>> parent of c771982 (hecha vista del registro pero la subida de  imagenes no funciona)
-		if(req.file){
-			const extension = path.extname(req.file.originalname);
-			const nombreunico = `${Date.now()}-${Math.round(Math.random()*1E9)}${extension}`;
-			foto_perfil = nombreunico;
-			saveFile.saveImage(req.file,'perfil',foto_perfil);
-		}
 		const hash = await bcrypt.encrypt(pass);
 		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{
 			if(rows.length === 0){
-				db.query(`INSERT INTO usuario (nombre,email,pass,foto_perfil,nivel)
-				VALUES (?,?,?,?,1);`,
-				[nombre,email,hash,foto_perfil],(err,rows)=>{
+				db.query(`INSERT INTO usuario (nombre,email,pass,nivel)
+				VALUES (?,?,?,1);`,
+				[nombre,email,hash],(err,rows)=>{
 					if(err) {
 						res.status(400).send(err.message);
 					}
