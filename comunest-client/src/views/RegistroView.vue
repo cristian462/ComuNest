@@ -7,7 +7,7 @@
             <div class="input-group">
                 <span class="input-group-text">@</span>
                 <div class="form-floating">
-                    <input type="text" class="form-control" placeholder="Nombre" v-model="user.nombre" required>
+                    <input type="text" class="form-control" :class="nombremal" placeholder="Nombre" v-model="user.nombre" required>
                     <label for="nombre">Nombre*</label>
                 </div>
             </div>
@@ -63,6 +63,7 @@ import {ref, watch} from "vue";
   let nombrevacio = ref("");
   let correomal = ref("");
   let msjcorreo = ref("");
+  let nombremal = ref("");
 
     watch(() => user.value.pass1, (newValue) => {
     if (!regex.test(newValue)) {
@@ -94,7 +95,11 @@ import {ref, watch} from "vue";
 
     watch(() => user.value.nombre, (newValue) => {
     if (!newValue) {
-      nombrevacio.value = "El nombre no puede quedar vacío."
+      nombrevacio.value = "El nombre no puede quedar vacío.";
+      nombremal.value = "is-invalid";
+    }else{
+      nombrevacio.value = "";
+      nombremal.value = "is-valid";
     }
     });
 
@@ -136,7 +141,7 @@ import {ref, watch} from "vue";
         body: JSON.stringify(jsonData)
       });
 
-      console.log(response);
+      console.log(await response.json());
 
       if(!response.ok){
         throw new Error('Error al enviar la solicitud');

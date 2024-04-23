@@ -16,7 +16,7 @@
         </ul>
 
         <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2">Login</button>
+          <router-link type="button" class="btn btn-outline-light me-2" to="/login">Login</router-link>
           <router-link class="btn btn-warning" to="/registro">Sign-up</router-link>
         </div>
       </div>
