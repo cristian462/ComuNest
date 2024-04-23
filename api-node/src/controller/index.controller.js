@@ -40,6 +40,7 @@ controller.login = async (req, res) =>{
 
 controller.registro = async (req, res) =>{
 	try{
+		console.log(req);
 		const {nombre, email, pass} = req.body;
 		const hash = await bcrypt.encrypt(pass);
 		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{

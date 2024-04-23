@@ -98,7 +98,7 @@ import {ref, watch} from "vue";
     }
     });
 
-  const submit = ()=>{
+  const submit = async ()=>{
     if(user.value.condiciones == false){
       alert("Debes aceptar los términos y condiciones de uso");
       return false;
@@ -118,14 +118,17 @@ import {ref, watch} from "vue";
 
     try{
       const jsonData = {
-        nombre: user.value.nombre,
-        correo: user.value.correo,
-        pass: user.value.pass1
+        "nombre": user.value.nombre, 
+        "email": user.value.correo, 
+        "pass": user.value.pass1
       };
-      // let formData = new FormData();
-      // formData.append('datos',JSON.stringify(jsonData));
+       const formData = new FormData();
+       
+       formData.append('datos',JSON.stringify(jsonData));
 
-      const response =fetch('http://localhost:4000/registro',{
+      console.log(JSON.stringify(jsonData));
+
+      const response = await fetch('http://localhost:4000/registro',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -133,7 +136,7 @@ import {ref, watch} from "vue";
         body: JSON.stringify(jsonData)
       });
 
-      console.log(JSON.parse(response));
+      console.log(response);
 
       if(!response.ok){
         throw new Error('Error al enviar la solicitud');
