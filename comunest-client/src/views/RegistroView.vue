@@ -132,7 +132,7 @@ import {ref, watch} from "vue";
 
       const jsonData = {
         nombre: user.value.nombre,
-        correo: user.value.correo,
+        email: user.value.correo,
         pass: user.value.pass1
       };
       formData.append('datos',JSON.stringify(jsonData));
