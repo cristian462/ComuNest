@@ -12,8 +12,8 @@ CREATE TABLE usuario (
         nombre VARCHAR(30),
         email VARCHAR(40),
         pass VARCHAR(100),
-        foto_perfil VARCHAR(100),
-        nivel TINYINT
+        nivel TINYINT,
+        activo TINYINT
 );
 
 

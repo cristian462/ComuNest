@@ -4,9 +4,6 @@
         <h1 class="fw-bold mb-0 fs-2 mb-4">Registrarse gratuitamente</h1>
     </div>
     <div class="body p-5 pt-0">
-            <label for=""></label>
-            <div class="container d-flex justify-content-end my-2">
-            </div>
             <div class="input-group">
                 <span class="input-group-text">@</span>
                 <div class="form-floating">
@@ -60,12 +57,12 @@ import {ref, watch} from "vue";
     condiciones:false
   });
 
-  let msjpass2 = ref('');
-  let pass1mal = ref('');
-  let pass2mal = ref('');
-  let nombrevacio = ref('');
-  let correomal = ref('');
-  let msjcorreo = ref('');
+  let msjpass2 = ref("");
+  let pass1mal = ref("");
+  let pass2mal = ref("");
+  let nombrevacio = ref("");
+  let correomal = ref("");
+  let msjcorreo = ref("");
 
     watch(() => user.value.pass1, (newValue) => {
     if (!regex.test(newValue)) {
@@ -125,15 +122,18 @@ import {ref, watch} from "vue";
         correo: user.value.correo,
         pass: user.value.pass1
       };
+      // let formData = new FormData();
+      // formData.append('datos',JSON.stringify(jsonData));
 
-      const formData = new FormData();
-      formData.append('datos',JSON.stringify(jsonData));
-
-      const response = fetch('http://localhost:4000/registro',{
+      const response =fetch('http://localhost:4000/registro',{
         method: 'POST',
-        contentType:"application/json" ,
-        body: formData
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
       });
+
+      console.log(JSON.parse(response));
 
       if(!response.ok){
         throw new Error('Error al enviar la solicitud');
