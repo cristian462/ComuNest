@@ -5,16 +5,15 @@
     </div>
     <div class="body p-5 pt-0">
             <div class="form-floating mb-4">
-                <input type="email" class="form-control rounded-3" placeholder="name@example.com" v-model="user.correo" required/>
+                <input type="email" class="form-control rounded-3" :class="mal" placeholder="name@example.com" v-model="user.correo" required/>
                 <label for="mail">Correo Electrónico</label>
             </div>
 
             <div class="form-floating mb-5">
-                <input type="password" class="form-control rounded-3" placeholder="Password" v-model="user.pass" required/>
+                <input type="password" class="form-control rounded-3" :class="mal" placeholder="Password" v-model="user.pass" required/>
                 <label for="pass">Contraseña</label>
             </div>
-            <div class="mb-4 mx-5-md mx-5-lg">
-            </div>
+            <div class="mb-4 mx-5-md mx-5-lg">{{ mensaje }}</div>
             <button class="w-100 my-2 btn btn-lg rounded-3 btn-primary" @click="submit">Iniciar Sesión</button>
     </div>
 </div>
@@ -23,12 +22,17 @@
 <script setup>
 import {ref} from "vue";
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 const store = useStore();
+const router = useRouter();
 let user = ref({
     correo: '',
     pass: '',
   });
+
+  let mal = ref('');
+  let mensaje = ref('');
 
   const submit = async ()=>{
 	try{
@@ -47,20 +51,16 @@ let user = ref({
 		const respuesta = await response.json();
 		//console.log(respuesta);
 
-		console.log(respuesta.usuario);
+		console.log(respuesta);
 
-		switch(respuesta.login){
-			case 0:
-				return "no coincide el correo";
-			case 1:
-				return "contraseña incorrecta";
-			case 2:
-				store.commit('setUser', respuesta.usuario);
-				console.log(store.state.user);
-				store.getters.destroy;
-				console.log(store.state.user);
+		if(respuesta.login === 0){
+			mal = "is-invalid"
+			mensaje = "Correo o contraseña incorrectos";
+		} else if(respuesta.login === 1){
+			store.commit('start', respuesta.usuario);
+			console.log(store.state.user);
+			router.push('/home');
 		}
-
 	}catch(err){
 		console.log(err);
 	}

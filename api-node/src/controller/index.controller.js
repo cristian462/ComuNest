@@ -2,6 +2,7 @@ const db = require('../database/conexion');
 const path = require('path');
 const bcrypt = require('../helper/handlerBcrypt');
 const saveFile = require('../helper/handlerSaveImage');
+const { log } = require('console');
 const controller = {};
 
 controller.index = (req, res) =>{
@@ -17,26 +18,26 @@ controller.login = async (req, res) =>{
 					if(err) {
 						res.status(400).send(err.message);
 					}
-					if(rows.length===0){
+					if(!rows || rows.length === 0){
 						//no coincide ningun correo
 						res.json({login: 0});
-					}
-
-					//comparamos contraseñas
-					const success = await bcrypt.compare(pass,rows[0].pass);
-					if(!success){
-						//no coinciden las contraseñas
-						res.json({login: 1});
 					}else{
-						//éxito
-						res.json({
-							login: 2,
-							usuario: {
-								id_user: rows[0].id_user,
-								nombre: rows[0].nombre,
-								nivel: rows[0].nivel
-							}
-						});
+						//comparamos contraseñas
+						const success = await bcrypt.compare(pass,rows[0].pass);
+						if(!success){
+							//no coinciden las contraseñas
+							res.json({login: 0});
+						}else{
+							//éxito
+							res.json({
+								login: 1,
+								usuario: {
+									id_user: rows[0].id_user,
+									nombre: rows[0].nombre,
+									nivel: rows[0].nivel
+								}
+							});
+						}
 					}
 				 }
 				  )

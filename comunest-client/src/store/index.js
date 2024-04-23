@@ -18,7 +18,7 @@ export default createStore({
     }
   },
   mutations: {
-     setUser(state, usuario){
+     start(state, usuario){
       state.user = usuario;
     }
   },
