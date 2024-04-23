@@ -22,13 +22,15 @@
 
 <script setup>
 import {ref} from "vue";
+import { useStore } from 'vuex';
 
+const store = useStore();
 let user = ref({
     correo: '',
     pass: '',
   });
 
-  const submit = async()=>{
+  const submit = async ()=>{
 	try{
 		const data = {
 			"email": user.value.correo,
@@ -42,7 +44,23 @@ let user = ref({
 			body: JSON.stringify(data)
 		});
 
-		console.log(await response.json());
+		const respuesta = await response.json();
+		//console.log(respuesta);
+
+		console.log(respuesta.usuario);
+
+		switch(respuesta.login){
+			case 0:
+				return "no coincide el correo";
+			case 1:
+				return "contraseña incorrecta";
+			case 2:
+				store.commit('setUser', respuesta.usuario);
+				console.log(store.state.user);
+				store.getters.destroy;
+				console.log(store.state.user);
+		}
+
 	}catch(err){
 		console.log(err);
 	}

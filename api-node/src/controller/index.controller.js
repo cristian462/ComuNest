@@ -11,7 +11,7 @@ controller.index = (req, res) =>{
 controller.login = async (req, res) =>{
 	try{
 		const {email,pass} = req.body;
-		db.query(`SELECT email, pass FROM usuario
+		db.query(`SELECT id_user,nombre,pass,nivel FROM usuario
 				  WHERE email=?`,
 				 [email], async(err,rows)=>{
 					if(err) {
@@ -29,7 +29,14 @@ controller.login = async (req, res) =>{
 						res.json({login: 1});
 					}else{
 						//éxito
-						res.json({login: 2});
+						res.json({
+							login: 2,
+							usuario: {
+								id_user: rows[0].id_user,
+								nombre: rows[0].nombre,
+								nivel: rows[0].nivel
+							}
+						});
 					}
 				 }
 				  )
