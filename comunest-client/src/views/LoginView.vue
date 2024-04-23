@@ -51,8 +51,6 @@ let user = ref({
 		const respuesta = await response.json();
 		//console.log(respuesta);
 
-		console.log(respuesta);
-
 		if(respuesta.login === 0){
 			mal = "is-invalid"
 			mensaje = "Correo o contraseña incorrectos";
