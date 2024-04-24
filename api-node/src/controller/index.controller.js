@@ -48,7 +48,6 @@ controller.login = async (req, res) =>{
 
 controller.registro = async (req, res) =>{
 	try{
-		console.log(req);
 		const {nombre, email, pass} = req.body;
 		const hash = await bcrypt.encrypt(pass);
 		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{
@@ -70,6 +69,56 @@ controller.registro = async (req, res) =>{
 		res.status(500).send(err.message);
 	}
 };
+
+controller.listadoCasas = async (req, res) => {
+    try {
+        const { id_user } = req.body;
+        db.query(`
+		SELECT 
+    casa.nombre AS nombre_casa,
+    gasto.nombre AS nombre_gasto,
+    gasto.descripcion AS descripcion_gasto,
+    gasto.importe AS importe_gasto
+FROM 
+    casa
+JOIN casa_user ON casa.id_casa = casa_user.id_casa
+JOIN gasto ON casa.id_casa = gasto.id_casa
+WHERE 
+    casa_user.id_user = ?;
+
+
+	`, [id_user], (err, rows) => {
+            if (err) {
+                res.status(400).send(err.message);
+            } else {
+                if (!rows || rows.length === 0) {
+                    res.json({ casas: [] });
+                } else {
+                    const result = {};
+                    result.casa = {};
+                    rows.forEach(row => {
+                        if (!result.casa[row.nombre_casa]) {
+                            result.casa[row.nombre_casa] = {
+                                nombre_ultimo_mes: row.nombre_ultimo_mes,
+                                resuelto_ultimo_mes: row.resuelto_ultimo_mes,
+                                gastos: []
+                            };
+                        }
+                        result.casa[row.nombre_casa].gastos.push({
+                            nombre_gasto: row.nombre_gasto,
+                            descripcion_gasto: row.descripcion_gasto,
+                            importe_gasto: row.importe_gasto
+                        });
+                    });
+                    res.json(result);
+                }
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 
 controller.fotoperfil = (req,res) =>{
 	try{
