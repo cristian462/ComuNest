@@ -74,42 +74,17 @@ controller.listadoCasas = async (req, res) => {
     try {
         const { id_user } = req.body;
         db.query(`
-		SELECT
-    casa.nombre AS nombre_casa,
-    gasto.importe AS importe_gasto
-FROM
-    casa
-JOIN casa_user ON casa.id_casa = casa_user.id_casa
-JOIN gasto ON casa.id_casa = gasto.id_casa
-WHERE
-    casa_user.id_user = ?;
-
-
+			SELECT g.id_casa,c.nombre,g.id_mes,m.nombre,m.resuelto, SUM(importe) AS total FROM gasto g
+			INNER JOIN casa c on g.id_casa = c.id_casa
+			INNER JOIN mes m on g.id_mes = m.id_mes
+			WHERE g.id_mes = (select max(g2.id_mes) FROM gasto g2 where g2.id_casa = g.id_casa)
+			AND id_user = 1
+			GROUP BY id_casa,id_mes;
 	`, [id_user], (err, rows) => {
             if (err) {
                 res.status(400).send(err.message);
             } else {
-                if (!rows || rows.length === 0) {
-                    res.json({ casas: [] });
-                } else {
-                    const result = {};
-                    result.casa = {};
-                    rows.forEach(row => {
-                        if (!result.casa[row.nombre_casa]) {
-                            result.casa[row.nombre_casa] = {
-                                nombre_ultimo_mes: row.nombre_ultimo_mes,
-                                resuelto_ultimo_mes: row.resuelto_ultimo_mes,
-                                gastos: []
-                            };
-                        }
-                        result.casa[row.nombre_casa].gastos.push({
-                            nombre_gasto: row.nombre_gasto,
-                            descripcion_gasto: row.descripcion_gasto,
-                            importe_gasto: row.importe_gasto
-                        });
-                    });
-                    res.json(result);
-                }
+				res.status(200).json(rows)
             }
         });
     } catch (err) {
