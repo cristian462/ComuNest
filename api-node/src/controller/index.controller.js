@@ -74,16 +74,14 @@ controller.listadoCasas = async (req, res) => {
     try {
         const { id_user } = req.body;
         db.query(`
-		SELECT 
+		SELECT
     casa.nombre AS nombre_casa,
-    gasto.nombre AS nombre_gasto,
-    gasto.descripcion AS descripcion_gasto,
     gasto.importe AS importe_gasto
-FROM 
+FROM
     casa
 JOIN casa_user ON casa.id_casa = casa_user.id_casa
 JOIN gasto ON casa.id_casa = gasto.id_casa
-WHERE 
+WHERE
     casa_user.id_user = ?;
 
 

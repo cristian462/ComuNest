@@ -34,7 +34,6 @@ CREATE TABLE mes (
         id_mes INT AUTO_INCREMENT PRIMARY KEY,
         nombre VARCHAR(30),
         id_casa INT,
-        total INT,
         resuelto TINYINT,
         FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE
 );
