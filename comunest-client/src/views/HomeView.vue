@@ -1,6 +1,7 @@
 <template>
   <div class="container d-flex flex-wrap gap-5 px-5 mt-5">
       <div class="card" :class="casa.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; max-width: 420px; border: 2px solid black;" v-for="casa in casas" :key="casa.id_casa">
+        <router-link :to="{name: 'casa', params: {id: casa.id_casa}}">
         <div class="card-body d-flex justify-content-around">
           <div class="d-flex flex-column pt-2" :class="casa.resuelto ? `border-success` : `border-danger`" style="border-right: 2px solid black; padding-right: 20px;">
           <h2 class="card-title">{{ casa.casa }}</h2>
@@ -12,6 +13,7 @@
           <small class="secondary-text d-flex justify-content-end" v-else>Resuelto</small>
         </div>
         </div>
+      </router-link>
       </div>
   </div>
 </template>
@@ -45,8 +47,16 @@ onMounted(async () => {
 </script>
 
 <style scopded>
+  .card{
+    transition: transform 0.3s ease;
+  }
+  a{
+    text-decoration: none !important;
+    color: black !important;
+  }
   .card:hover{
     cursor: pointer;
+    transform: scale(1.03);
   }
 
   .no-resuelto{

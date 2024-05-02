@@ -75,8 +75,8 @@ controller.listadoCasas = async (req, res) => {
         const { id_user } = req.body;
         db.query(`
 			SELECT g.id_casa,c.nombre AS casa,g.id_mes,m.nombre,m.resuelto, SUM(g.importe) AS total FROM gasto g
-			INNER JOIN casa c on g.id_casa = c.id_casa
-			INNER JOIN mes m on g.id_mes = m.id_mes
+			INNER JOIN casa c ON g.id_casa = c.id_casa
+			INNER JOIN mes m ON g.id_mes = m.id_mes
 			WHERE g.id_mes = (select max(g2.id_mes) FROM gasto g2 where g2.id_casa = g.id_casa)
 			AND id_user = ?
 			GROUP BY id_casa,id_mes;
@@ -90,7 +90,28 @@ controller.listadoCasas = async (req, res) => {
     } catch (err) {
         console.log(err);
     }
-}
+};
+
+controller.casa = async (req,res) =>{
+	try{
+		const { id_casa } = req.body;
+		db.query(`
+			SELECT m.id_mes, m.nombre, m.resuelto, SUM(g.importe) AS total FROM mes m 
+			INNER JOIN gasto g ON m.id_mes = g.id_mes
+			WHERE m.id_casa = 1
+			GROUP BY m.id_mes
+			ORDER BY m.id_mes DESC;
+		`, [id_casa],(err,rows)=>{
+			if(err) {
+				res.status(400).send(err.message);
+			} else {
+				res.status(200).json(rows)
+            }
+		});
+	}catch (err) {
+        console.log(err);
+    }
+};
 
 
 controller.fotoperfil = (req,res) =>{
