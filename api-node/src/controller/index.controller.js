@@ -74,11 +74,11 @@ controller.listadoCasas = async (req, res) => {
     try {
         const { id_user } = req.body;
         db.query(`
-			SELECT g.id_casa,c.nombre,g.id_mes,m.nombre,m.resuelto, SUM(importe) AS total FROM gasto g
+			SELECT g.id_casa,c.nombre AS casa,g.id_mes,m.nombre,m.resuelto, SUM(g.importe) AS total FROM gasto g
 			INNER JOIN casa c on g.id_casa = c.id_casa
 			INNER JOIN mes m on g.id_mes = m.id_mes
 			WHERE g.id_mes = (select max(g2.id_mes) FROM gasto g2 where g2.id_casa = g.id_casa)
-			AND id_user = 1
+			AND id_user = ?
 			GROUP BY id_casa,id_mes;
 	`, [id_user], (err, rows) => {
             if (err) {
