@@ -1,26 +1,72 @@
 <template>
-	<div class="container d-flex flex-wrap gap-5 px-5 mt-5">
-    <div class="card py-4" :class="casa.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; min-width: 420px; border: 2px solid black;" v-for="mes in meses" :key="mes.id_mes">
-      <h2>mes.nombre</h2>
-      <h5>mes.total</h5>
+	<div class="container d-flex flex-wrap gap-5 px-5 mt-5 flex-column">
+    <h1 class="d-flex justify-content-center" style="font-size: 2.9rem">{{nombre_casa}}</h1>
+    <div><button @click="nuevoMes()" class="btn btn-primary">+</button></div>
+
+    <div class="d-flex flex-row gap-5 flex-wrap">
+      <div class="card px-5 py-2 pt-3 d-flex flex-row justify-content-between" :class="mes.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; min-width: 408px; border: 2px solid black;" v-for="mes in meses" :key="mes.id_mes">
+        <h2 class="pr-5">{{ mes.nombre }}</h2>
+        <div>
+        <h4>Total: {{ mes.total }}</h4>
+      <small class="secondary-text d-flex justify-content-end" v-if="!mes.resuelto">No resuelto</small>
+      <small class="secondary-text d-flex justify-content-end" v-else>Resuelto</small>
     </div>
+    </div>
+    </div>
+    <h4 class="atras" @click="volverAtras()">&lt;&lt; Volver</h4>
   </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 
+const route = useRoute();
+	let id_casa ={
+    id_casa: route.params.id
+  };
 
+const router = useRouter();
 
-onMounted(async()=>{
-	const route = useRoute();
-	let id_casa = route.params.id;
+  const volverAtras = ()=>{
+    router.go(-1);
+  }
 
-  console.log(id_casa);
+  const nombre_casa = ref('');
+  nombre_casa.value = route.params.nombre;
 
   const meses = ref([]);
+
+  const store = useStore();
+  const nuevoMes = async ()=>{
+    
+    const date = new Date();
+    const nombreMesmin = date.toLocaleString('default', { month: 'long' });
+    const nombreMes = nombreMesmin.charAt(0).toUpperCase() + nombreMesmin.slice(1);
+    
+    let data = {
+      id_casa: route.params.id,
+      nombre: nombreMes,
+      id_user: store.state.user.id
+    }
+
+    try {
+      const response = await fetch("http://localhost:4000/nuevoMes", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+onMounted(async()=>{
 	try {
     const response = await fetch("http://localhost:4000/casa", {
       method: 'POST',
@@ -31,7 +77,6 @@ onMounted(async()=>{
     });
 	const fetchedMeses = await response.json();
   meses.value = fetchedMeses;
-	console.log(meses);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -39,6 +84,11 @@ onMounted(async()=>{
 </script>
 
 <style scoped>
+  .atras{
+    cursor: pointer;
+    color: blue;
+  }
+
  .card{
     transition: transform 0.3s ease;
   }

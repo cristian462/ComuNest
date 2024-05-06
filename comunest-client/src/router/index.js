@@ -11,7 +11,7 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/casa/:id',
+    path: '/casa/:id?:nombre',
     name: 'casa',
     component: CasaView
   },

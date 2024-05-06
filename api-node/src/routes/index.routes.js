@@ -7,7 +7,6 @@ router.post('/login',controller.login);
 router.post('/registro',controller.registro);
 router.post('/listaCasas',controller.listadoCasas);
 router.post('/casa',controller.casa);
-router.get('/consultar',controller.consultar);
-router.get('/consultar1',controller.consultar1);
+router.post('/nuevoMes',controller.nuevoMes);
 
 module.exports = router;

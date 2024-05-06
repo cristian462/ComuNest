@@ -91,7 +91,7 @@ controller.listadoCasas = async (req, res) => {
         console.log(err);
     }
 };
-
+ 
 controller.casa = async (req,res) =>{
 	try{
 		const { id_casa } = req.body;
@@ -113,46 +113,34 @@ controller.casa = async (req,res) =>{
     }
 };
 
-
-controller.fotoperfil = (req,res) =>{
+controller.nuevoMes = (req,res) =>{
 	try{
-		console.log(req.file.filename);
-
-		res.send('Termina');
+		const {id_casa, nombre, id_user} = req.body;
+		db.query(`
+			INSERT INTO mes (nombre, resuelto, id_casa)
+			VALUES (?, 0, ?);
+		`, [nombre,id_casa],(err,rows)=>{
+			if(err) {
+				res.status(400).send(err.message);
+			} else {
+				db.query(`
+					SELECT MAX(id_mes) AS id_mes FROM mes WHERE nombre = ? AND id_casa = ?;
+				`, [nombre,id_casa],(err,rows)=>{
+					db.query(`
+						INSERT INTO gasto (nombre,descripcion,importe, id_user, id_casa, id_mes)
+						VALUES ('Nuevo mes','Nuevo mes',0,? ,? ,?);
+					`,[id_user,id_casa,rows[0].id_mes],(err,rows)=>{
+						if(err) {
+							res.status(400).send(err.message);
+						} else {
+							res.status(200);
+						}
+					});
+				});
+            }
+		});
 	}catch(err){
 		console.log(err.message);
-	}
-};
-
-controller.consultar = (req, res) =>{
-	try{
-		db.query(`SELECT*FROM usuario`,
-					(err,rows) =>{
-						if(err){
-							res.status(400).send(err);
-						}
-						res.status(200).json(rows);
-					}
-				);
-	}catch(err){
-		res.status(500).send(err.message);
-	}
-};
-
-controller.consultar1 = (req, res) =>{
-	try{
-		const {id_user} = req.body;
-		db.query(`SELECT*FROM usuario
-				  WHERE id_user = ?`,
-				[id_user],(err,rows) =>{
-						if(err){
-							res.status(400).send(err);
-						}
-						res.status(200).json(rows);
-					}
-				);
-	}catch(err){
-		res.status(500).send(err.message);
 	}
 }
 
