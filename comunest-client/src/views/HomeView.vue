@@ -1,7 +1,7 @@
 <template>
   <div class="container d-flex flex-wrap gap-5 px-5 mt-5 flex-column">
     <h1 class="d-flex justify-content-center my-3" style="font-size: 2.9rem">Casas a las que perteneces:</h1>
-    <div><button class="btn btn-primary mx-1">+</button><button class="btn btn-primary">o</button></div>
+    <div><router-link to="/casaNueva"><button class="btn btn-primary mx-1">+</button></router-link><button class="btn btn-primary">o</button></div>
       <div class="card" :class="casa.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; max-width: 420px; border: 2px solid black;" v-for="casa in casas" :key="casa.id_casa">
         <router-link :to="{name: 'casa', params: {id: casa.id_casa, nombre: casa.casa}}">
         <div class="card-body d-flex justify-content-around">

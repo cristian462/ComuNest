@@ -18,6 +18,7 @@ CREATE TABLE usuario (
 
 CREATE TABLE casa (
         id_casa INT AUTO_INCREMENT PRIMARY KEY,
+        pass VARCHAR(100),
         nombre VARCHAR(30)
 );
 

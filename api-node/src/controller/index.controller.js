@@ -3,6 +3,7 @@ const path = require('path');
 const bcrypt = require('../helper/handlerBcrypt');
 const saveFile = require('../helper/handlerSaveImage');
 const { log } = require('console');
+const { ok } = require('assert');
 const controller = {};
 
 controller.index = (req, res) =>{
@@ -133,7 +134,7 @@ controller.nuevoMes = (req,res) =>{
 						if(err) {
 							res.status(400).send(err.message);
 						} else {
-							res.status(200);
+							res.status(200).send("ok");
 						}
 					});
 				});
@@ -142,6 +143,34 @@ controller.nuevoMes = (req,res) =>{
 	}catch(err){
 		console.log(err.message);
 	}
-}
+};
+
+controller.nuevaCasa = async(req,res) =>{
+	try{
+		const {id_user, nombre, pass} = req.body;
+		const hash = await bcrypt.encrypt(pass);
+		db.query(`
+			INSERT INTO casa (nombre,pass)
+			VALUES(?,?);
+		`,[nombre,hash],(err,rows)=>{
+			db.query(`
+				SELECT MAX(id_casa) AS id_casa FROM casa;
+			`,(err,rows)=>{
+				db.query(`
+					INSERT INTO casa_user (id_casa,id_user)
+					VALUES (?,?);
+				`,[rows[0].id_casa,id_user],(err,rows)=>{
+					if(err) {
+						res.status(400).send(err.message);
+					} else {
+						res.status(200).send("ok");
+					}
+				});
+			});
+		});
+	}catch(err){
+		console.log(err.message);
+	}
+};
 
 module.exports = controller;

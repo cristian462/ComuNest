@@ -8,5 +8,6 @@ router.post('/registro',controller.registro);
 router.post('/listaCasas',controller.listadoCasas);
 router.post('/casa',controller.casa);
 router.post('/nuevoMes',controller.nuevoMes);
+router.post('/nuevaCasa',controller.nuevaCasa);
 
 module.exports = router;

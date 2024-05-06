@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import RegistroView from '../views/RegistroView.vue'
 import LoginView from '../views/LoginView.vue'
 import CasaView from '../views/CasaView.vue'
+import NuevaCasa from '../views/NuevaCasa.vue'
+import MesNuevo from '../views/MesNuevo.vue'
 
 const routes = [
   {
@@ -24,6 +26,16 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/mesNuevo:id',
+    name: 'mesNuevo',
+    component: MesNuevo
+  },
+  {
+    path: '/casaNueva',
+    name: 'casaNueva',
+    component: NuevaCasa
   }
 ]
 
