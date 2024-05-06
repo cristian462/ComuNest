@@ -1,7 +1,7 @@
 <template>
 	<div class="container d-flex flex-wrap gap-5 px-5 mt-5 flex-column">
     <h1 class="d-flex justify-content-center" style="font-size: 2.9rem">{{nombre_casa}}</h1>
-    <div><router-link :to="{name:'mesNuevo',params:{id: id}}"><button class="btn btn-primary">+</button></router-link></div>
+    <div><router-link to="/casaNueva"><button class="btn btn-primary">+</button></router-link></div>
 
     <div class="d-flex flex-row gap-5 flex-wrap">
       <div class="card px-5 py-2 pt-3 d-flex flex-row justify-content-between" :class="mes.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; min-width: 408px; border: 2px solid black;" v-for="mes in meses" :key="mes.id_mes">
