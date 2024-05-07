@@ -13,5 +13,8 @@ router.post('/searchCasas',controller.searchCasas);
 router.post('/compruebaCasa',controller.compruebaCasa);
 router.post('/casaLogin',controller.casaLogin);
 router.post('/compruebaUsers',controller.compruebaUsers);
+router.post('/gastos',controller.gastos);
+router.post('/resolver',controller.resolver);
+router.post('/gastoNuevo',controller.gastoNuevo);
 
 module.exports = router;

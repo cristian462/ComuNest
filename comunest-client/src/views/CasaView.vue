@@ -4,13 +4,18 @@
     <div><router-link to="/casaNueva"><button class="btn btn-primary">+</button></router-link></div>
 
     <div class="d-flex flex-row gap-5 flex-wrap">
-      <div class="card px-5 py-2 pt-3 d-flex flex-row justify-content-between" :class="mes.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; min-width: 408px; border: 2px solid black;" v-for="mes in meses" :key="mes.id_mes">
-        <h2 class="pr-5">{{ mes.nombre }}</h2>
-        <div>
-        <h4>Total: {{ mes.total }}</h4>
-      <small class="secondary-text d-flex justify-content-end" v-if="!mes.resuelto">No resuelto</small>
-      <small class="secondary-text d-flex justify-content-end" v-else>Resuelto</small>
-    </div>
+      <div v-for="mes in meses" :key="mes.id_mes">
+        <router-link :to="{name: 'gastos', params: {id_mes: mes.id_mes, nombre: mes.nombre, resuelto: mes.resuelto, id_casa: id_casa.id_casa}}">
+          <div class="card px-5 py-2 pt-3 d-flex flex-row justify-content-between" :class="mes.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" 
+            style="flex-grow: 1; min-width: 408px; border: 2px solid black;">
+            <h2 class="pr-5">{{ mes.nombre }}</h2>
+            <div>
+              <h4>Total: {{ mes.total }}</h4>
+              <small class="secondary-text d-flex justify-content-end" v-if="!mes.resuelto">No resuelto</small>
+              <small class="secondary-text d-flex justify-content-end" v-else>Resuelto</small>
+            </div>
+          </div>
+        </router-link>
     </div>
     </div>
     <h4 class="atras" @click="volverAtras()">&lt;&lt; Volver</h4>

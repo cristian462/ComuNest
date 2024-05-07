@@ -6,6 +6,8 @@ import CasaView from '../views/CasaView.vue'
 import NuevaCasa from '../views/NuevaCasa.vue'
 import MesNuevo from '../views/MesNuevo.vue'
 import CasaLoginView from '../views/CasaLoginView.vue'
+import GastosView from '../views/GastosView.vue'
+import GastoNuevoView from '../views/GastoNuevoView.vue'
 
 const routes = [
   {
@@ -14,7 +16,7 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/casa/:id?:nombre',
+    path: '/casa/:id/:nombre',
     name: 'casa',
     component: CasaView
   },
@@ -29,7 +31,7 @@ const routes = [
     component: LoginView
   },
   {
-    path: '/mesNuevo:id',
+    path: '/mesNuevo/:id',
     name: 'mesNuevo',
     component: MesNuevo
   },
@@ -39,9 +41,19 @@ const routes = [
     component: NuevaCasa
   },
   {
-    path: '/casaLogin/:id?:nombre',
+    path: '/casaLogin/:id/:nombre',
     name: 'casaLogin',
     component: CasaLoginView
+  },
+  {
+    path: '/gastosView/:id_mes/:nombre/:resuelto/:id_casa',
+    name: 'gastos',
+    component: GastosView
+  },
+  {
+    path: '/gastoNuevo/:id_mes/:id_casa',
+    name: 'gastoNuevo',
+    component: GastoNuevoView
   }
 ]
 

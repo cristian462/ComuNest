@@ -92,7 +92,6 @@ controller.listadoCasas = async (req, res) => {
 controller.casa = async (req,res) =>{
 	try{
 		const { id_casa } = req.body;
-		console.log(id_casa);
 		db.query(`
 			SELECT m.id_mes, m.nombre, m.resuelto, SUM(g.importe) AS total FROM mes m 
 			INNER JOIN gasto g ON m.id_mes = g.id_mes
@@ -250,6 +249,65 @@ controller.compruebaUsers = async(req,res)=>{
 		console.error('Error al buscar casas:', err);
 		res.status(500).json({ err: 'Error interno del servidor' });
 	}
-}
+};
+
+controller.gastos = async(req,res)=>{
+	try{
+		const { id_mes } = req.body;
+		db.query(`
+			SELECT g.nombre,g.descripcion,g.importe,u.nombre AS nombre_user FROM gasto g
+			INNER JOIN usuario u ON g.id_user = u.id_user
+			WHERE g.id_mes = ?;
+		`,[id_mes],(err,rows)=>{
+			if(rows){
+				res.status(200).json(rows);
+			}else{
+				res.status(404);
+			}
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+};
+
+controller.resolver = async(req,res)=>{
+	try{
+		const {id_mes} = req.body
+		db.query(`
+			UPDATE mes
+			SET resuelto = 1
+			WHERE id_mes = ?;
+			`,[id_mes],(err,rows)=>{
+			if(err){
+				res.status(200).json({resuelto: 0});
+			}else{
+				res.status(200).json({resuelto: 1});
+			}
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+};
+
+controller.gastoNuevo = async(req,res)=>{
+	try{
+		const {nombre, descripcion, importe, id_user, id_casa, id_mes} = req.body
+		db.query(`
+			INSERT INTO gasto (nombre, descripcion, importe, id_user, id_casa, id_mes)
+			VALUES (?,?,?,?,?,?)
+			`,[nombre, descripcion, importe, id_user, id_casa, id_mes],(err,rows)=>{
+			if(err){
+				res.status(200).json({exito: 0});
+			}else{
+				res.status(200).json({exito: 1});
+			}
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+};
 
 module.exports = controller;

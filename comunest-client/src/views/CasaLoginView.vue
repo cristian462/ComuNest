@@ -1,4 +1,5 @@
 <template>
+	<div class="container ml-5">
 	<div class="ficha">
   <h2>Ingresa a la casa {{ casa_nombre }}</h2>
     <div class="input-container">
@@ -13,6 +14,8 @@
         <li v-for="integrante in integrantes" :key="integrante.nombre">{{ integrante.nombre }}</li>
       </ul>
     </div>
+</div>
+<h4 class="atras mb-5 ml-5 pl-5 pb-5" @click="volverAtras()">&lt;&lt; Volver</h4>
 </div>
 
 
@@ -30,6 +33,10 @@ import { ref, onMounted } from 'vue';
 
 	let mal=ref('');
 	let pass = ref('');
+
+	const volverAtras = ()=>{
+    router.go(-1);
+	}
 
 	let casa_nombre = ref(route.params.nombre);
 
@@ -56,7 +63,7 @@ import { ref, onMounted } from 'vue';
 				router.push('/');
 			}
 		}catch(err){
-			console.error("Error fetching data:", err);
+			mal = 'is-invalid';
 		}
 	};
 
@@ -74,7 +81,7 @@ import { ref, onMounted } from 'vue';
 			});
 			integrantes.value = await response.json();
 		}catch(err){
-			console.error("Error fetching data:", err);
+			mal = 'is-invalid';
 		}
 	});
 		
@@ -83,7 +90,10 @@ import { ref, onMounted } from 'vue';
 
 
 <style scoped>
-
+.atras{
+    cursor: pointer;
+    color: blue;
+  }
 .ficha {
   display: flex;
   flex-direction: column;
