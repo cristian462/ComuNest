@@ -12,5 +12,6 @@ router.post('/nuevaCasa',controller.nuevaCasa);
 router.post('/searchCasas',controller.searchCasas);
 router.post('/compruebaCasa',controller.compruebaCasa);
 router.post('/casaLogin',controller.casaLogin);
+router.post('/compruebaUsers',controller.compruebaUsers);
 
 module.exports = router;

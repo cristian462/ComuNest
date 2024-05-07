@@ -49,13 +49,14 @@
 
 <script setup>
 import { useStore } from 'vuex';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
 const store = useStore();
 const id_user = store.state.user.id;
 
+let casas_usuario = [];
 let search = ref('');
-let casas = ref([])
+let casas = ref([]);
 
 watch(()=>search.value, async (newValue)=>{
   try {
@@ -71,12 +72,35 @@ watch(()=>search.value, async (newValue)=>{
           body: JSON.stringify(data)
         });
         const fetchedCasas = await response.json();
-        casas.value = fetchedCasas;
+
+        let idCasas = casas_usuario.map(obj =>obj.id_casa);
+
+        casas.value = fetchedCasas.filter(obj => !idCasas.includes(obj.id_casa));
     }
   } catch (error) {
     console.error("Error fetching data:", error);
   }
-})
+});
+
+onMounted(async()=>{
+  try {
+    let data = {
+      id_user: store.state.user.id
+    };
+    const response = await fetch("http://localhost:4000/listaCasas", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    const fetchedCasas = await response.json();
+    casas_usuario = fetchedCasas;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+});
+
 
 </script>
 

@@ -10,9 +10,7 @@
     <div class="integrantes">
       <h3>Integrantes:</h3>
       <ul>
-        <li>Nombre 1</li>
-        <li>Nombre 2</li>
-        <li>Nombre 3</li>
+        <li v-for="integrante in integrantes" :key="integrante.nombre">{{ integrante.nombre }}</li>
       </ul>
     </div>
 </div>
@@ -23,11 +21,12 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 	
 	const route = useRoute();
 	const router = useRouter();
 	const store = useStore();
+	const integrantes = ref([]);
 
 	let mal=ref('');
 	let pass = ref('');
@@ -59,9 +58,26 @@ import { ref } from 'vue';
 		}catch(err){
 			console.error("Error fetching data:", err);
 		}
-		
+	};
 
-	}
+	onMounted(async()=>{
+		try{
+			let data = {
+			id_casa: route.params.id
+			};
+			const response = await fetch('http://localhost:4000/compruebaUsers',{
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			});
+			integrantes.value = await response.json();
+		}catch(err){
+			console.error("Error fetching data:", err);
+		}
+	});
+		
 
 </script>
 

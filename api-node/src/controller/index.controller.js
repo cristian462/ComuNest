@@ -20,16 +20,12 @@ controller.login = async (req, res) =>{
 						res.status(400).send(err.message);
 					}
 					if(!rows || rows.length === 0){
-						//no coincide ningun correo
 						res.json({login: 0});
 					}else{
-						//comparamos contraseñas
 						const success = await bcrypt.compare(pass,rows[0].pass);
 						if(!success){
-							//no coinciden las contraseñas
 							res.json({login: 0});
 						}else{
-							//éxito
 							res.json({
 								login: 1,
 								usuario: {
@@ -225,13 +221,34 @@ controller.casaLogin = async(req,res) =>{
 					INSERT INTO casa_user (id_casa, id_user)
 					VALUES (?, ?);
 				`,[id_casa,id_user],(err,rows)=>{
-					res.status(200).json({exito: 1});
+					res.status(200).json({exito: 1,});
 				});
 			}
 		});
 	}catch(err){
 		console.error('Error al buscar casas:', err);
-		res.status(500).json({ error: 'Error interno del servidor' });
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+};
+
+controller.compruebaUsers = async(req,res)=>{
+	try{
+		const { id_casa } = req.body;
+		db.query(`
+			SELECT u.nombre
+			FROM usuario u
+			JOIN casa_user cu ON u.id_user = cu.id_user
+			WHERE cu.id_casa = ?;
+		`,[id_casa],(err,rows)=>{
+			if(rows){
+				res.status(200).json(rows);
+			}else{
+				res.status(404);
+			}
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
 	}
 }
 
