@@ -96,10 +96,11 @@ controller.listadoCasas = async (req, res) => {
 controller.casa = async (req,res) =>{
 	try{
 		const { id_casa } = req.body;
+		console.log(id_casa);
 		db.query(`
 			SELECT m.id_mes, m.nombre, m.resuelto, SUM(g.importe) AS total FROM mes m 
 			INNER JOIN gasto g ON m.id_mes = g.id_mes
-			WHERE m.id_casa = 1
+			WHERE m.id_casa = ?
 			GROUP BY m.id_mes
 			ORDER BY m.id_mes DESC;
 		`, [id_casa],(err,rows)=>{
@@ -160,17 +161,78 @@ controller.nuevaCasa = async(req,res) =>{
 					INSERT INTO casa_user (id_casa,id_user)
 					VALUES (?,?);
 				`,[rows[0].id_casa,id_user],(err,rows)=>{
+					
 					if(err) {
 						res.status(400).send(err.message);
-					} else {
-						res.status(200).send("ok");
 					}
 				});
+				res.status(200).json({id_casa: rows[0].id_casa});
 			});
 		});
 	}catch(err){
 		console.log(err.message);
 	}
 };
+
+controller.searchCasas = async(req, res) =>{
+	try {
+		const { nombre } = req.body;
+		db.query(`
+		  SELECT id_casa, nombre FROM casa
+		  WHERE LOWER(nombre) LIKE ?; 
+		`, [`%${nombre}%`], (err, rows) => {
+		  if (err) {
+			console.error('Error al buscar casas:', err);
+			return res.status(500).json({ error: 'Error interno del servidor' });
+		  }
+		  res.status(200).json(rows);
+		});
+	  } catch (error) {
+		console.error('Error al buscar casas:', error);
+		res.status(500).json({ error: 'Error interno del servidor' });
+	  }
+};
+
+controller.compruebaCasa = async(req,res) =>{
+	try{
+		const {nombre} = req.body;
+		db.query(`
+			SELECT id_casa FROM casa WHERE nombre = ?;
+		`,[nombre],(err,rows)=>{
+			if(rows[0]){
+				res.status(200).json({existe: 1});
+			}else{
+				res.status(200).json({existe: 0});
+			}
+		});
+	} catch (error) {
+		console.error('Error al buscar casas:', error);
+		res.status(500).json({ error: 'Error interno del servidor' });
+	  }
+};
+
+controller.casaLogin = async(req,res) =>{
+	try{
+		const {id_user,id_casa,pass} = req.body;
+		db.query(`
+			SELECT pass FROM casa WHERE id_casa = ?;
+		`, [id_casa],async(err,rows)=>{
+			const success = await bcrypt.compare(pass,rows[0].pass);
+			if(!success){
+				res.status(200).json({exito: 0});
+			}else{
+				db.query(`
+					INSERT INTO casa_user (id_casa, id_user)
+					VALUES (?, ?);
+				`,[id_casa,id_user],(err,rows)=>{
+					res.status(200).json({exito: 1});
+				});
+			}
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ error: 'Error interno del servidor' });
+	}
+}
 
 module.exports = controller;

@@ -21,8 +21,6 @@ import { useStore } from 'vuex';
 				nombre: nombreMes,
 				id_user: store.state.user.id
 			}
-
-			try {
 			const response = await fetch("http://localhost:4000/nuevoMes", {
 				method: 'POST',
 				headers: {
@@ -31,10 +29,7 @@ import { useStore } from 'vuex';
 				body: JSON.stringify(data)
 			});
 			console.log(response);
-			router.go(-1);
-			} catch (error) {
-			console.error("Error fetching data:", error);
-			}
+			router.go(-1);	
 				}catch(error){
 					console.error("Error fetching data:", error);
 				}

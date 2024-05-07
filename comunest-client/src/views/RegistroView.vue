@@ -61,9 +61,10 @@ import {ref, watch} from "vue";
   let pass1mal = ref("");
   let pass2mal = ref("");
   let nombrevacio = ref("");
+  let nombremal = ref("");
   let correomal = ref("");
   let msjcorreo = ref("");
-  let nombremal = ref("");
+  
 
     watch(() => user.value.pass1, (newValue) => {
     if (!regex.test(newValue)) {
@@ -131,8 +132,6 @@ import {ref, watch} from "vue";
        
        formData.append('datos',JSON.stringify(jsonData));
 
-      console.log(JSON.stringify(jsonData));
-
       const response = await fetch('http://localhost:4000/registro',{
         method: 'POST',
         headers: {
@@ -141,7 +140,7 @@ import {ref, watch} from "vue";
         body: JSON.stringify(jsonData)
       });
 
-      console.log(await response.json());
+      console.log(await response);
 
       if(!response.ok){
         throw new Error('Error al enviar la solicitud');

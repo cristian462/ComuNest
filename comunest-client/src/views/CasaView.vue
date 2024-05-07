@@ -28,7 +28,7 @@ const route = useRoute();
   id.value = route.params.id;
 
 	let id_casa ={
-    id_casa: id
+    id_casa: route.params.id
   };
 
 const router = useRouter();

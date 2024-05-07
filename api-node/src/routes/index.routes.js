@@ -9,5 +9,8 @@ router.post('/listaCasas',controller.listadoCasas);
 router.post('/casa',controller.casa);
 router.post('/nuevoMes',controller.nuevoMes);
 router.post('/nuevaCasa',controller.nuevaCasa);
+router.post('/searchCasas',controller.searchCasas);
+router.post('/compruebaCasa',controller.compruebaCasa);
+router.post('/casaLogin',controller.casaLogin);
 
 module.exports = router;
