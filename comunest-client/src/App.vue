@@ -18,7 +18,13 @@
   <header class="p-3 text-bg-dark" v-else>
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <a href="#" class="profile-picture" data-bs-toggle="dropdown" aria-expanded="true">
+          <span class="initials">{{ iniciales }}</span>
+        </a>
+          <ul class="dropdown-menu text-small" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(0px, -33.6px, 0px);" data-popper-placement="top-start">
+            <li><a class="dropdown-item" @click="cerrarSesion">Cerrar Sesión</a></li>
+          </ul>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 mx-5">
           <li><router-link class="nav-link px-4 text-white" to="/">Home</router-link></li>
           <li><router-link class="nav-link px-4 text-white" to="/casaNueva">Crear Casa</router-link></li>
           <li><router-link class="nav-link px-4 text-white" to="/aboutUs">Sobre Nosotros</router-link></li>
@@ -29,7 +35,7 @@
       </div>
     </div>
   </header>
-  <router-view v-if="search === ''" />
+  <router-view v-if="search === ''"/>
 
   <div v-if="(search !== '' && casas.length !== 0)">
     <ul class="cards container d-flex align-items-center flex-column gap-5 mt-5 mt-5">
@@ -54,9 +60,16 @@ import { ref, watch, onMounted } from 'vue';
 const store = useStore();
 const id_user = store.state.user.id;
 
+console.log(store.state.user.id + "hola");
+
+const cerrarSesion = ()=>{
+
+}
+
 let casas_usuario = [];
 let search = ref('');
 let casas = ref([]);
+let iniciales = ref('as')
 
 watch(()=>search.value, async (newValue)=>{
   try {
@@ -87,6 +100,12 @@ onMounted(async()=>{
     let data = {
       id_user: store.state.user.id
     };
+
+    let nombre = store.state.user.nombre;
+    iniciales.value = nombre.substring(0, 2);
+
+    
+
     const response = await fetch("http://localhost:4000/listaCasas", {
       method: 'POST',
       headers: {
@@ -105,6 +124,23 @@ onMounted(async()=>{
 </script>
 
 <style lang="scss" scoped>
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  background-color: #0f0; 
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff; 
+  font-size: 23px; 
+  font-weight: bold; 
+  text-transform: uppercase; 
+  text-align: center; 
+}
+
+
+
 .cards{
   list-style-type: none;
   padding: 0;

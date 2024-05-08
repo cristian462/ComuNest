@@ -1,8 +1,8 @@
 <template>
   <div class="container d-flex flex-wrap gap-5 px-5 mt-5 flex-column">
     <h1 class="d-flex justify-content-center my-3 pb-5" style="font-size: 2.9rem">Casas a las que perteneces</h1>
-    <div class="d-flex flex-row gap-5 flex-wrap">
-      <div class="card" :class="casa.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; max-width: 500px; border: 2px solid black;" v-for="casa in casas" :key="casa.id_casa">
+    <div class="d-flex flex-row gap-5 flex-wrap justify-content-center">
+      <div class="card" :class="casa.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; min-width: 500px; border: 2px solid black;" v-for="casa in casas" :key="casa.id_casa">
         <router-link :to="{name: 'casa', params: {id: casa.id_casa, nombre: casa.casa}}">
         <div class="card-body d-flex justify-content-around">
           <div class="d-flex flex-column pt-2" :class="casa.resuelto ? `border-success` : `border-danger`" style="border-right: 2px solid black; padding-right: 20px;">

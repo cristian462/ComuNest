@@ -3,7 +3,7 @@
     <h1 class="d-flex justify-content-center" style="font-size: 2.9rem">{{nombre_casa}}</h1>
     <div><router-link to="/casaNueva"><button class="btn btn-primary">+</button></router-link></div>
 
-    <div class="d-flex flex-row gap-5 flex-wrap">
+    <div class="d-flex flex-row gap-5 flex-wrap justify-content-center">
       <div v-for="mes in meses" :key="mes.id_mes">
         <router-link :to="{name: 'gastos', params: {id_mes: mes.id_mes, nombre: mes.nombre, resuelto: mes.resuelto, id_casa: id_casa.id_casa}}">
           <div class="card px-5 py-2 pt-3 d-flex flex-row justify-content-between" :class="mes.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" 

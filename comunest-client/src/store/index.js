@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     user: {
-      id: 1,
+      id: 0,
       nombre: "",
       nivel: 0
     }

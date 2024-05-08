@@ -4,7 +4,7 @@
 		<h1 class="d-flex justify-content-center">Gastos de {{ nombre_mes }}</h1>
 		<h3 class="text-success d-flex justify-content-center mb-3" v-if="resuelto == 1">Resuelto</h3>
 		<h3 class="text-danger d-flex justify-content-center mb-3" v-if="resuelto == 0">No Resuelto</h3>
-		<div class="mb-4 mx-3"><router-link :to="{name: 'gastoNuevo', params:{id_mes: id_mes, id_casa: id_casa}}"><button class="btn btn-primary">+</button></router-link></div>
+		<div class="mb-4 mx-5" v-if="resuelto == 0"><router-link class="mx-5" :to="{name: 'gastoNuevo', params:{id_mes: id_mes, id_casa: id_casa}}"><button class="btn btn-primary">+</button></router-link></div>
 		<div class="container">
   <table class="styled-table">
     <thead>
@@ -13,21 +13,21 @@
         <th>Descripción</th>
         <th>Importe</th>
         <th>Usuario</th>
-        <th></th>
+        <th v-if="resuelto == 0"></th>
       </tr>
     </thead>
 	<tbody>
-      <tr v-for="(gasto, index) in gastos" :key="index">    
-			<td>{{ gasto.nombre }}</td>
-			<td>{{ gasto.descripcion }}</td>
-			<td>{{ gasto.importe }}</td>
-			<td>{{ gasto.nombre_user }}</td>
-			<td><button class="delete-btn">X</button></td>
-	</tr>
+      <tr v-for="gasto in gastos" :key="gasto.id">   
+        <td>{{ gasto.nombre }}</td>
+        <td>{{ gasto.descripcion }}</td>
+        <td>{{ gasto.importe }}</td>
+        <td>{{ gasto.nombre_user }}</td>
+        <td v-if="resuelto == 0"><button @click="deleteRow(gasto.id)" class="delete-btn">X</button></td>
+      </tr>
 	</tbody>
   </table>
 </div>
-<h4 class="atras my-5 ml-5 " @click="volverAtras()">&lt;&lt; Volver</h4>
+<h4 class="atras my-5 mx-5" @click="volverAtras()">&lt;&lt; Volver</h4>
 	</div>
 </template>
 
@@ -63,9 +63,27 @@ const resolver = async()=>{
 		resuelto.value = 1;
 		router.go(-1);
 	}
-	
-	
 };
+
+const deleteRow = async(id)=>{
+  let data = {
+    id: id
+  };
+  const response = await fetch('http://localhost:4000/borrarGasto', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+  });
+
+  const respuesta = await response.json();
+  if(respuesta.exito === 1){
+    router.go(0);
+  }
+
+
+}
 
 onMounted(async()=>{
 	let data = {

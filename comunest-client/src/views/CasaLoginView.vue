@@ -4,7 +4,7 @@
   <h2>Ingresa a la casa {{ casa_nombre }}</h2>
     <div class="input-container">
       <label class="pb-2" for="password">Contraseña:</label>
-      <input type="password" :class="mal" v-model="pass" id="password" placeholder="Ingresa la contraseña...">
+      <input type="password" id="password" v-model="pass" class="form-control " :class="mal">
     </div>
 	
 	<button type="submit" @click="submit">Enviar</button>
@@ -31,7 +31,7 @@ import { ref, onMounted } from 'vue';
 	const store = useStore();
 	const integrantes = ref([]);
 
-	let mal=ref('');
+	let mal=ref();
 	let pass = ref('');
 
 	const volverAtras = ()=>{
@@ -57,15 +57,17 @@ import { ref, onMounted } from 'vue';
 			const respuesta = await response.json();
 
 			console.log(respuesta);
-			if(respuesta.exito === 0){
-				mal = 'is-invalid';
-			}else{
+			if(respuesta.exito === 1){
 				router.push('/');
+			}else{
+				mal = 'is-invalid';
 			}
 		}catch(err){
 			mal = 'is-invalid';
 		}
 	};
+
+	
 
 	onMounted(async()=>{
 		try{

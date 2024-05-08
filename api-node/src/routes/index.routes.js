@@ -16,5 +16,6 @@ router.post('/compruebaUsers',controller.compruebaUsers);
 router.post('/gastos',controller.gastos);
 router.post('/resolver',controller.resolver);
 router.post('/gastoNuevo',controller.gastoNuevo);
+router.post('/borrarGasto',controller.borrarGasto);
 
 module.exports = router;

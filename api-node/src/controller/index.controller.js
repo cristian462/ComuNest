@@ -255,7 +255,7 @@ controller.gastos = async(req,res)=>{
 	try{
 		const { id_mes } = req.body;
 		db.query(`
-			SELECT g.nombre,g.descripcion,g.importe,u.nombre AS nombre_user FROM gasto g
+			SELECT g.id ,g.nombre,g.descripcion,g.importe,u.nombre AS nombre_user FROM gasto g
 			INNER JOIN usuario u ON g.id_user = u.id_user
 			WHERE g.id_mes = ?;
 		`,[id_mes],(err,rows)=>{
@@ -302,12 +302,30 @@ controller.gastoNuevo = async(req,res)=>{
 				res.status(200).json({exito: 0});
 			}else{
 				res.status(200).json({exito: 1});
-			}
+			} 
 		});
 	}catch(err){
 		console.error('Error al buscar casas:', err);
 		res.status(500).json({ err: 'Error interno del servidor' });
 	}
 };
+
+controller.borrarGasto = async(req,res)=>{
+	try{
+		const {id} = req.body
+		db.query(`
+				DELETE FROM gasto WHERE id = ?;
+			`,[id],(err,rows)=>{
+			if(err){
+				res.status(200).json({exito: 0});
+			}else{
+				res.status(200).json({exito: 1});
+			} 
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+}
 
 module.exports = controller;

@@ -13,7 +13,7 @@
                 <input type="password" class="form-control rounded-3" :class="mal" placeholder="Password" v-model="user.pass" required/>
                 <label for="pass">Contraseña</label>
             </div>
-            <div class="mb-4 mx-5-md mx-5-lg">{{ mensaje }}</div>
+            <div class="mb-4 mx-5-md mx-5-lg text-danger">{{ mensaje }}</div>
             <button class="w-100 my-2 btn btn-lg rounded-3 btn-primary" @click="submit">Iniciar Sesión</button>
     </div>
 </div>
@@ -49,15 +49,15 @@ let user = ref({
 		});
 
 		const respuesta = await response.json();
-		//console.log(respuesta);
 
-		if(respuesta.login === 0){
+		console.log(respuesta.login);
+
+		if(respuesta.login == 0){
 			mal = "is-invalid"
 			mensaje = "Correo o contraseña incorrectos";
-		} else if(respuesta.login === 1){
+		} else if(respuesta.login == 1){
 			store.commit('start', respuesta.usuario);
-			console.log(store.state.user);
-			router.push('/home');
+			router.push('/');
 		}
 	}catch(err){
 		console.log(err);
