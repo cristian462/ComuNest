@@ -1,13 +1,12 @@
 <template>
   <div class="container d-flex flex-wrap gap-5 px-5 mt-5 flex-column">
     <h1 class="d-flex justify-content-center my-3 pb-5" style="font-size: 2.9rem" v-if="data.id_user !== 0">Casas a las que perteneces</h1>
-    <div class="d-flex flex-column align-items-center justify-content-center mx-5 my-5" v-else>
+    <div class="d-flex flex-column align-items-center justify-content-center mx-5 my-5 " v-else>
       <h1>Aún no te has registrado en nuestra página</h1>
       <h2>Puedes hacerlo <router-link to="/registro"> <rl class="link"> aquí </rl></router-link> </h2>
-
     </div>
-    <div class="d-flex flex-row gap-5 flex-wrap justify-content-center">
-      <div class="card" :class="casa.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; min-width: 500px; border: 2px solid black;" v-for="casa in casas" :key="casa.id_casa">
+    <div class="contenedor-cards d-flex flex-row gap-5 flex-wrap justify-content-center">
+      <div class="card" :class="casa.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" v-for="casa in casas" :key="casa.id_casa">
         <router-link :to="{name: 'casa', params: {id: casa.id_casa, nombre: casa.casa}}">
         <div class="card-body d-flex justify-content-around">
           <div class="d-flex flex-column pt-2" :class="casa.resuelto ? `border-success` : `border-danger`" style="border-right: 2px solid black; padding-right: 20px;">
@@ -56,12 +55,18 @@ onMounted(async () => {
 </script>
 
 <style scopded>
+  .container{
+    height: 440px;
+  }
   .link{
     color: blue;
     text-decoration-line: underline;
   }
   .card{
     transition: transform 0.3s ease;
+    flex-grow: 1; 
+    min-width: 500px; 
+    border: 2px solid black;
   }
   a{
     text-decoration: none !important;
@@ -78,5 +83,18 @@ onMounted(async () => {
 
   .si-resuelto{
     background-color: rgba(0, 255, 0, 0.1) !important;
+  }
+
+  @media(width<720px){
+    .card{
+      min-width: 200px;
+    }
+    .contenedor-cards{
+      flex-direction: column !important;
+    }
+    .container{
+      height: auto;
+      min-height: 500px;
+    }
   }
 </style>

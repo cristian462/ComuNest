@@ -3,11 +3,10 @@
     <h1 class="d-flex justify-content-center" style="font-size: 2.9rem">{{nombre_casa}}</h1>
     <div><router-link :to="{name: 'mesNuevo', params:{id: id_casa.id_casa}}"><button class="btn btn-primary">+</button></router-link></div>
 
-    <div class="d-flex flex-row gap-5 flex-wrap justify-content-center">
+    <div class="contenedor-cards">
       <div v-for="mes in meses" :key="mes.id_mes">
         <router-link :to="{name: 'gastos', params: {id_mes: mes.id_mes, nombre: mes.nombre, resuelto: mes.resuelto, id_casa: id_casa.id_casa}}">
-          <div class="card px-5 py-2 pt-3 d-flex flex-row justify-content-between" :class="mes.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" 
-            style="flex-grow: 1; min-width: 408px; border: 2px solid black;">
+          <div class="card px-5 py-2 pt-3 d-flex flex-row justify-content-between" :class="mes.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`">
             <h2 class="pr-5">{{ mes.nombre }}</h2>
             <div>
               <h4>Total: {{ mes.total }}</h4>
@@ -70,8 +69,19 @@ onMounted(async()=>{
     color: blue;
   }
 
+  .contenedor-cards{
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
  .card{
     transition: transform 0.3s ease;
+    flex-grow: 1; 
+    min-width: 408px; 
+    border: 2px solid black;
   }
   a{
     text-decoration: none !important;
@@ -87,5 +97,14 @@ onMounted(async()=>{
 
   .si-resuelto{
     background-color: rgba(0, 255, 0, 0.1) !important;
+  }
+
+  @media(width<652px){
+    .card{
+      min-width: 200px;
+    }
+    .contenedor-cards{
+      flex-direction: column !important;
+    }
   }
 </style>

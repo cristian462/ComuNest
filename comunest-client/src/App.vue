@@ -4,9 +4,9 @@
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><router-link class="nav-link px-4 text-white" to="/">Home</router-link></li>
+          <li><router-link class="nav-link px-4 text-white" to="/">Inicio</router-link></li>
           <li><router-link class="nav-link px-4 text-white" to="/registro">Crear una Casa</router-link></li>
-          <li><router-link class="nav-link px-4 text-white" to="/aboutus">Sobre nosotros</router-link></li>
+          <!-- <li><router-link class="nav-link px-4 text-white" to="/aboutus">Sobre nosotros</router-link></li> -->
         </ul>
         <div class="text-end">
           <router-link type="button" class="btn btn-warning me-2" to="/login">Iniciar Sesión</router-link>
@@ -27,7 +27,7 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 mx-5">
           <li><router-link class="nav-link px-4 text-white" to="/">Home</router-link></li>
           <li><router-link class="nav-link px-4 text-white" to="/casaNueva">Crear Casa</router-link></li>
-          <li><router-link class="nav-link px-4 text-white" to="/aboutUs">Sobre Nosotros</router-link></li>
+          <!-- <li><router-link class="nav-link px-4 text-white" to="/aboutUs">Sobre Nosotros</router-link></li> -->
         </ul>
         <div class="text-end">
           <input class="form-control" type="search" placeholder="Buscar Casa" aria-label="Search" v-model="search">
@@ -35,6 +35,57 @@
       </div>
     </div>
   </header>
+
+  <nav class="navbar navbar-dark bg-dark d-none" aria-label="First navbar example" v-if="id_user!==0">
+    <div class="container-fluid">
+      <router-link to="/" class="navbar-brand text-white">ComuNest</router-link>
+      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse bg-dark collapse mt-4 px-5" id="navbarsExample01">
+        <ul class="navbar-nav me-auto mb-3">
+          <li class="nav-item mt-3">
+            <input class="form-control mb-3" type="search" placeholder="Search" aria-label="Search" v-model="search">
+          </li>
+          <li class="nav-item mt-3">
+            <router-link class="text-white fs-5" to="/nuevaCasa">Crear Casa</router-link>
+          </li>
+          <!-- <li class="nav-item mt-3">
+            <a class="text-white fs-5">Sobre Nosotros</a>
+          </li> -->
+          <hr class="text-white my-3">
+          <li class="nav-item">
+            <a class="text-white fs-5" @click="cerrarSesion">Cerrar Sesión</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="navbar navbar-dark bg-dark d-none" aria-label="First navbar example" v-if="id_user===0">
+    <div class="container-fluid">
+      <router-link to="/" class="navbar-brand text-white">ComuNest</router-link>
+      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="navbar-collapse bg-dark collapse mt-4 px-5" id="navbarsExample01">
+        <ul class="navbar-nav me-auto mb-3">
+          <li class="nav-item mt-3">
+            <router-link class="text-white fs-5" to="/login">Iniciar Sesión</router-link>
+          </li>
+          <hr class="text-white my-3">
+          <li class="nav-item mt-3">
+            <router-link class="text-white fs-5" to="/registro">Registrarse</router-link>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+
   <router-view v-if="search === ''"/>
 
   <div v-if="(search !== '' && casas.length !== 0)">
@@ -49,6 +100,16 @@
     <h1 class="h1">{{ search }} no existe</h1>
   </div>
 
+
+
+  <footer class="py-3 mt-4 text-bg-dark">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item"><router-link to="/" class="nav-link px-2 text-white">Inicio</router-link></li>
+      <li class="nav-item"><a href="mailto:correo@ejemplo.com" class="nav-link px-2 text-white">Correo Electrónico</a></li>
+      <li class="nav-item"><a href="tel:+123456789" class="nav-link px-2 text-white">Teléfono</a></li>
+    </ul>
+    <p class="text-center text-white">© 2024 ComuNest</p>
+  </footer>
 
 </div>
 </template>
@@ -147,7 +208,9 @@ onMounted(async()=>{
   text-align: center; 
 }
 
-
+header{
+  height: 80px;
+}
 
 .cards{
   list-style-type: none;
@@ -212,8 +275,18 @@ nav {
     }
   }
 }
-
 a{
   cursor: pointer;
+}
+
+@media(width<992px){
+  header{
+    display: none;
+  }
+
+  nav{
+    height: 100px;
+    display: block !important;
+  }
 }
 </style>

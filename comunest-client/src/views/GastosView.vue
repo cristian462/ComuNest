@@ -152,4 +152,101 @@ onMounted(async()=>{
     cursor: pointer;
     color: blue;
   }
+
+@media(width<375px){
+  .container {
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.styled-table th, .styled-table td {
+  padding: 12px 8px; /* Se reduce el padding horizontal para dispositivos móviles */
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+.delete-btn {
+  padding: 8px; /* Se reduce el padding para dispositivos móviles */
+  background-color: #ff5f5f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #e74c3c;
+}
+
+.atras{
+    cursor: pointer;
+    color: blue;
+    text-align: center; /* Se centra el texto para dispositivos móviles */
+    margin-top: 20px; /* Se añade un espacio en la parte superior para dispositivos móviles */
+  }
+
+/* Se reduce el tamaño del texto para dispositivos móviles */
+.h1 {
+  font-size: 24px;
+}
+
+.text-success, .text-danger {
+  font-size: 18px;
+}
+
+/* Se reduce el tamaño del botón "Resolver" para dispositivos móviles */
+.btn-success {
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+/* Se reduce el tamaño del botón "+" para dispositivos móviles */
+.btn-primary {
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+/* Se reduce el tamaño de las celdas de la tabla para dispositivos móviles */
+.styled-table th, .styled-table td {
+  font-size: 14px;
+}
+
+/* Se añade un margen inferior a los botones de acción para dispositivos móviles */
+td:last-child {
+  margin-bottom: 10px;
+}
+
+/* Se ajusta el tamaño del botón de eliminar para dispositivos móviles */
+.delete-btn {
+  font-size: 12px;
+  padding: 6px 8px;
+}
+
+/* Se añade un espacio entre los botones de acción para dispositivos móviles */
+.delete-btn + .delete-btn {
+  margin-left: 5px;
+}
+
+
+}
 </style>
