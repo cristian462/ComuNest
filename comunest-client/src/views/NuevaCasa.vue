@@ -36,14 +36,12 @@
 
 <script setup>
 import {ref, watch} from "vue";
-import { useStore } from 'vuex';
 import { useRouter } from "vue-router";
 const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@()/_-])[a-zA-Z\d@()/_-]{8,16}$/;
-const store = useStore();
 const router = useRouter();
 
 let casa = ref({
-    id_user: store.state.user.id,
+    id_user: localStorage.getItem('userId'),
     nombre: '',
     pass1: '',
     pass2: ''
@@ -146,7 +144,7 @@ const submit = async ()=>{
             let data = {
 				id_casa: respuesta.id_casa,
 				nombre: nombreMes,
-				id_user: store.state.user.id
+				id_user: localStorage.getItem('userId')
 			}
             console.log(data.id_casa);
 			const createMonth = await fetch("http://localhost:4000/nuevoMes", {

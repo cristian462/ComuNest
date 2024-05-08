@@ -45,7 +45,8 @@
 
 <script setup>
 import {ref, watch} from "vue";
-
+import { useRouter } from "vue-router";
+  const router = useRouter();
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@()/_-])[a-zA-Z\d@()/_-]{8,16}$/;
   const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -140,7 +141,7 @@ import {ref, watch} from "vue";
         body: JSON.stringify(jsonData)
       });
 
-      console.log(await response);
+      router.push('/login');
 
       if(!response.ok){
         throw new Error('Error al enviar la solicitud');

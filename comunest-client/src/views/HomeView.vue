@@ -1,6 +1,11 @@
 <template>
   <div class="container d-flex flex-wrap gap-5 px-5 mt-5 flex-column">
-    <h1 class="d-flex justify-content-center my-3 pb-5" style="font-size: 2.9rem">Casas a las que perteneces</h1>
+    <h1 class="d-flex justify-content-center my-3 pb-5" style="font-size: 2.9rem" v-if="data.id_user !== 0">Casas a las que perteneces</h1>
+    <div class="d-flex flex-column align-items-center justify-content-center mx-5 my-5" v-else>
+      <h1>Aún no te has registrado en nuestra página</h1>
+      <h2>Puedes hacerlo <router-link to="/registro"> <rl class="link"> aquí </rl></router-link> </h2>
+
+    </div>
     <div class="d-flex flex-row gap-5 flex-wrap justify-content-center">
       <div class="card" :class="casa.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`" style="flex-grow: 1; min-width: 500px; border: 2px solid black;" v-for="casa in casas" :key="casa.id_casa">
         <router-link :to="{name: 'casa', params: {id: casa.id_casa, nombre: casa.casa}}">
@@ -23,12 +28,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useStore } from 'vuex';
 
-const store = useStore();
+
 const data = {
-  id_user: store.state.user.id
+  id_user: localStorage.getItem('userId') == null ? 0 : localStorage.getItem('userId')
 };
+
 
 const casas = ref([]);
 
@@ -43,6 +48,7 @@ onMounted(async () => {
     });
     const fetchedCasas = await response.json();
     casas.value = fetchedCasas;
+    console.log(casas.value);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -50,6 +56,10 @@ onMounted(async () => {
 </script>
 
 <style scopded>
+  .link{
+    color: blue;
+    text-decoration-line: underline;
+  }
   .card{
     transition: transform 0.3s ease;
   }

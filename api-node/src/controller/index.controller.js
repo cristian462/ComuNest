@@ -1,9 +1,6 @@
 const db = require('../database/conexion');
 const path = require('path');
 const bcrypt = require('../helper/handlerBcrypt');
-const saveFile = require('../helper/handlerSaveImage');
-const { log } = require('console');
-const { ok } = require('assert');
 const controller = {};
 
 controller.index = (req, res) =>{
@@ -13,7 +10,7 @@ controller.index = (req, res) =>{
 controller.login = async (req, res) =>{
 	try{
 		const {email,pass} = req.body;
-		db.query(`SELECT id_user,nombre,pass,nivel FROM usuario
+		db.query(`SELECT id_user,nombre,pass FROM usuario
 				  WHERE email=?`,
 				 [email], async(err,rows)=>{
 					if(err) {
@@ -30,8 +27,7 @@ controller.login = async (req, res) =>{
 								login: 1,
 								usuario: {
 									id_user: rows[0].id_user,
-									nombre: rows[0].nombre,
-									nivel: rows[0].nivel
+									nombre: rows[0].nombre
 								}
 							});
 						}
@@ -49,8 +45,8 @@ controller.registro = async (req, res) =>{
 		const hash = await bcrypt.encrypt(pass);
 		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{
 			if(rows.length === 0){
-				db.query(`INSERT INTO usuario (nombre,email,pass,nivel)
-				VALUES (?,?,?,1);`,
+				db.query(`INSERT INTO usuario (nombre,email,pass)
+				VALUES (?,?,?);`,
 				[nombre,email,hash],(err,rows)=>{
 					if(err) {
 						res.status(400).send(err.message);
@@ -220,6 +216,15 @@ controller.casaLogin = async(req,res) =>{
 					INSERT INTO casa_user (id_casa, id_user)
 					VALUES (?, ?);
 				`,[id_casa,id_user],(err,rows)=>{
+					db.query(`
+						SELECT MAX(id_mes) AS id_mes FROM mes WHERE id_casa = ?;
+					`,[id_casa],(err,rows)=>{
+						db.query(`
+							INSERT INTO gasto (nombre,descripcion,importe, id_user, id_casa, id_mes)
+							VALUES ('Nuevo mes','Nuevo mes',0,? ,? ,?);
+						`,[id_user,id_casa,rows[0].id_mes],(err,rows)=>{
+						});
+					});
 					res.status(200).json({exito: 1,});
 				});
 			}

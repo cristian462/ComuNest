@@ -25,9 +25,6 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
-import { useStore } from 'vuex';
-
-const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const volverAtras = ()=>{
@@ -65,7 +62,7 @@ watch(()=>form.value.importe,(newValue)=>{
 		form_invalid.value.importe = 'is-invalid';
 		mensaje_mal.value.importe = 'El importe no puede ser 0.';
 	}else{
-		if(!isNaN(newValue)){
+		if(isNaN(newValue)){
 			form_invalid.value.importe = 'is-invalid';
 			mensaje_mal.value.importe = 'El valor de importe debe ser numerico';
 		}else{
@@ -96,7 +93,7 @@ const submit = async()=>{
 		nombre: form.value.nombre,
 		descripcion : form.value.desc,
 		importe: form.value.importe,
-		id_user: store.state.user.id,
+		id_user: localStorage.getItem('userId'),
 		id_casa: route.params.id_casa,
 		id_mes: route.params.id_mes
 	};

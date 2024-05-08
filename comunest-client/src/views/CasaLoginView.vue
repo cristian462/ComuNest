@@ -23,12 +23,10 @@
 
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
 import { ref, onMounted } from 'vue';
 	
 	const route = useRoute();
 	const router = useRouter();
-	const store = useStore();
 	const integrantes = ref([]);
 
 	let mal=ref();
@@ -43,7 +41,7 @@ import { ref, onMounted } from 'vue';
 	const submit = async()=>{
 		try{
 			let data = {
-				id_user: store.state.user.id,
+				id_user: localStorage.getItem('userId'),
 				id_casa: route.params.id,
 				pass: pass.value
 			};

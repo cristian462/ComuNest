@@ -9,8 +9,8 @@
           <li><router-link class="nav-link px-4 text-white" to="/aboutus">Sobre nosotros</router-link></li>
         </ul>
         <div class="text-end">
-          <router-link type="button" class="btn btn-outline-light me-2 text-white" to="/login">Login</router-link>
-          <router-link class="btn btn-warning" to="/registro">Sign-up</router-link>
+          <router-link type="button" class="btn btn-warning me-2" to="/login">Iniciar Sesión</router-link>
+          <router-link class="btn btn-warning" to="/registro">Registrarse</router-link>
         </div>
       </div>
     </div>
@@ -54,22 +54,22 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { ref, watch, onMounted } from 'vue';
 
-const store = useStore();
-const id_user = store.state.user.id;
+const id_user = ref(localStorage.getItem('userId') == null ? 0 : localStorage.getItem('userId'));
 
-console.log(store.state.user.id + "hola");
-
+const router = useRouter();
 const cerrarSesion = ()=>{
-
+  localStorage.removeItem('userId');
+  localStorage.removeItem('userName');
+  router.go(0);
 }
 
 let casas_usuario = [];
 let search = ref('');
 let casas = ref([]);
-let iniciales = ref('as')
+let iniciales = ref('')
 
 watch(()=>search.value, async (newValue)=>{
   try {
@@ -95,13 +95,20 @@ watch(()=>search.value, async (newValue)=>{
   }
 });
 
+watch(()=>localStorage.getItem('userId'), (newValue)=>{
+  if(newValue !== null){
+    router.go(0);
+  }
+})
+
 onMounted(async()=>{
-  try {
+  if(localStorage.getItem('userId')!==null){
+    try {
     let data = {
-      id_user: store.state.user.id
+      id_user: id_user
     };
 
-    let nombre = store.state.user.nombre;
+    let nombre = localStorage.getItem('userName');
     iniciales.value = nombre.substring(0, 2);
 
     
@@ -115,8 +122,9 @@ onMounted(async()=>{
     });
     const fetchedCasas = await response.json();
     casas_usuario = fetchedCasas;
-  } catch (error) {
-    console.error("Error fetching data:", error);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   }
 });
 
@@ -203,5 +211,9 @@ nav {
       color: #42b983;
     }
   }
+}
+
+a{
+  cursor: pointer;
 }
 </style>

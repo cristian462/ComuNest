@@ -14,18 +14,21 @@
                 <label for="pass">Contraseña</label>
             </div>
             <div class="mb-4 mx-5-md mx-5-lg text-danger">{{ mensaje }}</div>
-            <button class="w-100 my-2 btn btn-lg rounded-3 btn-primary" @click="submit">Iniciar Sesión</button>
+            <button class="w-100 my-2 btn btn-lg rounded-3 btn-primary mb-5" @click="submit">Iniciar Sesión</button>
+			<small class="fs-6 d-flex justify-content-center">Si aún no tienes una cuenta registrate&nbsp;<router-link to="/registro"> <rl class="link"> aquí </rl> </router-link></small>
     </div>
 </div>
 </template>
 
 <script setup>
 import {ref} from "vue";
-import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
-const store = useStore();
 const router = useRouter();
+
+if(localStorage.getItem('userId')!==null){
+	router.push('/');
+}
 let user = ref({
     correo: '',
     pass: '',
@@ -56,11 +59,19 @@ let user = ref({
 			mal = "is-invalid"
 			mensaje = "Correo o contraseña incorrectos";
 		} else if(respuesta.login == 1){
-			store.commit('start', respuesta.usuario);
-			router.push('/');
+			localStorage.setItem('userId', respuesta.usuario.id_user);
+			localStorage.setItem('userName', respuesta.usuario.nombre);
+			router.go(0);
 		}
 	}catch(err){
 		console.log(err);
 	}
   }
 </script>
+
+<style scoped>
+.link{
+    color: blue;
+    text-decoration-line: underline;
+  }
+</style>
