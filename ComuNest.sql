@@ -41,7 +41,7 @@ CREATE TABLE mes (
 
 
 CREATE TABLE gasto (
-        PRIMARY KEY (id_user, id_casa, id_mes),
+        id_gasto INT AUTO_INCREMENT PRIMARY KEY,
         nombre VARCHAR(30),
         descripcion VARCHAR(300),
         importe INT,

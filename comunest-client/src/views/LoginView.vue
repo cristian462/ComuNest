@@ -5,12 +5,12 @@
     </div>
     <div class="body p-5 pt-0">
             <div class="form-floating mb-4">
-                <input type="email" class="form-control rounded-3" :class="mal" placeholder="name@example.com" v-model="user.correo" required/>
+                <input type="email" class="form-control rounded-3" placeholder="name@example.com" v-model="user.correo" required/>
                 <label for="mail">Correo Electrónico</label>
             </div>
 
             <div class="form-floating mb-5">
-                <input type="password" class="form-control rounded-3" :class="mal" placeholder="Password" v-model="user.pass" required/>
+                <input type="password" class="form-control rounded-3" placeholder="Password" v-model="user.pass" required/>
                 <label for="pass">Contraseña</label>
             </div>
             <div class="mb-4 mx-5-md mx-5-lg text-danger">{{ mensaje }}</div>
@@ -34,7 +34,6 @@ let user = ref({
     pass: '',
   });
 
-  let mal = ref('');
   let mensaje = ref('');
 
   const submit = async ()=>{
@@ -56,7 +55,6 @@ let user = ref({
 		console.log(respuesta.login);
 
 		if(respuesta.login == 0){
-			mal = "is-invalid"
 			mensaje = "Correo o contraseña incorrectos";
 		} else if(respuesta.login == 1){
 			localStorage.setItem('userId', respuesta.usuario.id_user);
