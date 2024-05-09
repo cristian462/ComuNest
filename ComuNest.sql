@@ -54,14 +54,14 @@ CREATE TABLE gasto (
 );
 
 
-CREATE TABLE comentario (
-        id_coment INT AUTO_INCREMENT PRIMARY KEY,
-        id_user INT,
-        id_casa INT,
-        contenido VARCHAR(400),
-        FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE,
-        FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE
-);
+-- CREATE TABLE comentario (
+--         id_coment INT AUTO_INCREMENT PRIMARY KEY,
+--         id_user INT,
+--         id_casa INT,
+--         contenido VARCHAR(400),
+--         FOREIGN KEY (id_user) REFERENCES usuario(id_user) ON DELETE CASCADE,
+--         FOREIGN KEY (id_casa) REFERENCES casa(id_casa) ON DELETE CASCADE
+-- );
 
 
 

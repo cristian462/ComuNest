@@ -56,7 +56,7 @@ onMounted(async () => {
 
 <style scopded>
   .container{
-    height: 440px;
+    min-height: 440px;
   }
   .link{
     color: blue;
