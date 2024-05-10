@@ -86,7 +86,7 @@
 
 
 
-  <router-view v-if="search === ''"/>
+  <router-view class="vista" v-if="search === ''"/>
 
   <div v-if="(search !== '' && casas.length !== 0)">
     <ul class="cards container d-flex align-items-center flex-column gap-5 mt-5 mt-5">
@@ -172,7 +172,7 @@ onMounted(async()=>{
     let nombre = localStorage.getItem('userName');
     iniciales.value = nombre.substring(0, 2);
 
-    
+
 
     const response = await fetch("http://localhost:4000/listaCasas", {
       method: 'POST',
@@ -193,19 +193,23 @@ onMounted(async()=>{
 </script>
 
 <style lang="scss" scoped>
+
+.vista{
+  min-height: 630px;
+}
 .profile-picture {
   width: 50px;
   height: 50px;
-  background-color: #0f0; 
-  border-radius: 50%; 
+  background-color: #0f0;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff; 
-  font-size: 23px; 
-  font-weight: bold; 
-  text-transform: uppercase; 
-  text-align: center; 
+  color: #fff;
+  font-size: 23px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 header{
@@ -225,8 +229,8 @@ header{
   padding: 12px 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   text-align: center;
-  margin-bottom: 1rem; 
-  height: 9rem; 
+  margin-bottom: 1rem;
+  height: 9rem;
   display: flex;
   align-items: center;
   justify-content: center;
