@@ -331,6 +331,24 @@ controller.borrarGasto = async(req,res)=>{
 		console.error('Error al buscar casas:', err);
 		res.status(500).json({ err: 'Error interno del servidor' });
 	}
-}
+};
+
+controller.borrarCasa = async(req,res)=>{
+	try{
+		const {id_casa} = req.body
+		db.query(`
+				DELETE FROM casa WHERE id_casa = ?;
+			`,[id_casa],(err,rows)=>{
+			if(err){
+				res.status(200).json({exito: 0});
+			}else{
+				res.status(200).json({exito: 1});
+			} 
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+};
 
 module.exports = controller;

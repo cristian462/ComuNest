@@ -91,6 +91,7 @@
   <div v-if="(search !== '' && casas.length !== 0)">
     <ul class="cards container d-flex align-items-center flex-column gap-5 mt-5 mt-5">
       <div v-for="casa in casas" :key="casa.id_casa">
+        <div class="d-flex justify-content-end borra-casa" v-if="id_user==1"  @click="borrarCasa(casa.id_casa)">x</div>
         <router-link @click="search=''" :to="{name:'casaLogin',params:{id:casa.id_casa, nombre: casa.nombre}}"><li class="elemento py-2 px-4" >{{ casa.nombre }}</li></router-link>
       </div>
     </ul>
@@ -131,6 +132,22 @@ let casas_usuario = [];
 let search = ref('');
 let casas = ref([]);
 let iniciales = ref('')
+
+const borrarCasa = async(id)=>{
+  let data = {
+    id_casa: id
+  }
+  console.log(data);
+  const response = await fetch("http://localhost:4000/borrarCasa",{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        console.log(response);
+        router.go(0);
+}
 
 watch(()=>search.value, async (newValue)=>{
   try {
@@ -193,7 +210,10 @@ onMounted(async()=>{
 </script>
 
 <style lang="scss" scoped>
-
+.borra-casa{
+  color: red;
+  cursor: pointer;
+}
 .vista{
   min-height: 630px;
 }

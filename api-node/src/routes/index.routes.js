@@ -17,5 +17,6 @@ router.post('/gastos',controller.gastos);
 router.post('/resolver',controller.resolver);
 router.post('/gastoNuevo',controller.gastoNuevo);
 router.post('/borrarGasto',controller.borrarGasto);
+router.post('/borrarCasa',controller.borrarCasa);
 
 module.exports = router;
