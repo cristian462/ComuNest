@@ -5,7 +5,7 @@ const controller = require('../controller/index.controller');
 router.get('/',controller.index);
 router.post('/login',controller.login);
 router.post('/registro',controller.registro);
-router.post('/listaCasas',controller.listadoCasas);
+router.post('/listaCasas',controller.listaCasas);
 router.post('/casa',controller.casa);
 router.post('/nuevoMes',controller.nuevoMes);
 router.post('/nuevaCasa',controller.nuevaCasa);
@@ -18,5 +18,9 @@ router.post('/resolver',controller.resolver);
 router.post('/gastoNuevo',controller.gastoNuevo);
 router.post('/borrarGasto',controller.borrarGasto);
 router.post('/borrarCasa',controller.borrarCasa);
+router.get('/allCasas',controller.allCasas);
+router.post('/listaIntegrantes',controller.listaIntegrantes);
+router.post('/borrarIntegrante',controller.borrarIntegrante);
+router.post('/casasUsuario',controller.casasUsuario);
 
 module.exports = router;

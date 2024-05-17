@@ -1,6 +1,7 @@
 const db = require('../database/conexion');
 const path = require('path');
 const bcrypt = require('../helper/handlerBcrypt');
+const { log } = require('console');
 const controller = {};
 
 controller.index = (req, res) =>{
@@ -10,7 +11,7 @@ controller.index = (req, res) =>{
 controller.login = async (req, res) =>{
 	try{
 		const {email,pass} = req.body;
-		db.query(`SELECT id_user,nombre,pass FROM usuario
+		db.query(`SELECT id_user,nombre,pass,nivel FROM usuario
 				  WHERE email=?`,
 				 [email], async(err,rows)=>{
 					if(err) {
@@ -27,7 +28,8 @@ controller.login = async (req, res) =>{
 								login: 1,
 								usuario: {
 									id_user: rows[0].id_user,
-									nombre: rows[0].nombre
+									nombre: rows[0].nombre,
+									nivel: rows[0].nivel
 								}
 							});
 						}
@@ -45,8 +47,8 @@ controller.registro = async (req, res) =>{
 		const hash = await bcrypt.encrypt(pass);
 		db.query(`SELECT id_user FROM usuario WHERE email=?`,[email],(err,rows)=>{
 			if(rows.length === 0){
-				db.query(`INSERT INTO usuario (nombre,email,pass)
-				VALUES (?,?,?);`,
+				db.query(`INSERT INTO usuario (nombre,email,pass,nivel)
+				VALUES (?,?,?,0);`,
 				[nombre,email,hash],(err,rows)=>{
 					if(err) {
 						res.status(400).send(err.message);
@@ -63,7 +65,7 @@ controller.registro = async (req, res) =>{
 	}
 };
 
-controller.listadoCasas = async (req, res) => {
+controller.listaCasas = async (req, res) => {
     try {
         const { id_user } = req.body;
         db.query(`
@@ -74,11 +76,7 @@ controller.listadoCasas = async (req, res) => {
 			AND id_user = ?
 			GROUP BY id_casa,id_mes;
 	`, [id_user], (err, rows) => {
-            if (err) {
-                res.status(400).send(err.message);
-            } else {
-				res.status(200).json(rows)
-            }
+			res.status(200).json(rows)
         });
     } catch (err) {
         console.log(err);
@@ -260,7 +258,7 @@ controller.gastos = async(req,res)=>{
 	try{
 		const { id_mes } = req.body;
 		db.query(`
-			SELECT g.id ,g.nombre,g.descripcion,g.importe,u.nombre AS nombre_user FROM gasto g
+			SELECT g.id_gasto ,g.nombre,g.descripcion,g.importe,u.nombre AS nombre_user FROM gasto g
 			INNER JOIN usuario u ON g.id_user = u.id_user
 			WHERE g.id_mes = ?;
 		`,[id_mes],(err,rows)=>{
@@ -319,7 +317,7 @@ controller.borrarGasto = async(req,res)=>{
 	try{
 		const {id} = req.body
 		db.query(`
-				DELETE FROM gasto WHERE id = ?;
+				DELETE FROM gasto WHERE id_gasto = ?;
 			`,[id],(err,rows)=>{
 			if(err){
 				res.status(200).json({exito: 0});
@@ -350,5 +348,79 @@ controller.borrarCasa = async(req,res)=>{
 		res.status(500).json({ err: 'Error interno del servidor' });
 	}
 };
+
+controller.allCasas = async(req,res)=>{
+	try{
+		db.query(`
+				SELECT id_casa,nombre FROM casa
+			`,(err,rows)=>{
+			if(err){
+				res.status(404);
+			}else{
+				res.status(200).json(rows);
+			} 
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+};
+
+controller.listaIntegrantes = async (req,res)=>{
+	try{
+		const {id_casa} = req.body
+		db.query(`
+				SELECT u.nombre, c.id_user FROM casa_user c
+				INNER JOIN usuario u ON u.id_user = c.id_user
+				WHERE c.id_casa = ?
+			`,[id_casa],(err,rows)=>{
+			if(err){
+				res.status(404);
+			}else{
+				res.status(200).json(rows);
+			} 
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+};
+
+controller.borrarIntegrante = async(req,res)=>{
+	try{
+		const {id_casa, id_user} = req.body
+		db.query(`
+				DELETE FROM casa_user
+				WHERE id_casa = ? AND id_user = ?;
+			`,[id_casa, id_user],(err,rows)=>{
+			if(err){
+				res.status(404);
+			}else{
+				res.status(200);
+			} 
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+}
+
+controller.casasUsuario = async(req,res)=>{
+	try{
+		const {id} = req.body
+		db.query(`
+				SELECT id_casa FROM casa_user WHERE id_user = ?
+			`,[id],(err,rows)=>{
+			if(err){
+				res.status(404);
+			}else{
+				res.status(200).json(rows);
+			} 
+		});
+	}catch(err){
+		console.error('Error al buscar casas:', err);
+		res.status(500).json({ err: 'Error interno del servidor' });
+	}
+}
 
 module.exports = controller;

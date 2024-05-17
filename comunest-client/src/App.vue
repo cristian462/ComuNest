@@ -27,7 +27,7 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 mx-5">
           <li><router-link class="nav-link px-4 text-white" to="/">Home</router-link></li>
           <li><router-link class="nav-link px-4 text-white" to="/casaNueva">Crear Casa</router-link></li>
-          <!-- <li><router-link class="nav-link px-4 text-white" to="/aboutUs">Sobre Nosotros</router-link></li> -->
+          <li><router-link class="nav-link px-4 text-white" to="/panelAdmin" v-if="nivel == 1">Administrar Casas</router-link></li>
         </ul>
         <div class="text-end">
           <input class="form-control" type="search" placeholder="Buscar Casa" aria-label="Search" v-model="search">
@@ -49,11 +49,11 @@
             <input class="form-control mb-3" type="search" placeholder="Search" aria-label="Search" v-model="search">
           </li>
           <li class="nav-item mt-3">
-            <router-link class="text-white fs-5" to="/nuevaCasa">Crear Casa</router-link>
+            <router-link class="text-white fs-5" to="/casaNueva">Crear Casa</router-link>
           </li>
-          <!-- <li class="nav-item mt-3">
-            <a class="text-white fs-5">Sobre Nosotros</a>
-          </li> -->
+          <li class="nav-item mt-3">
+            <router-link class="text-white fs-5" to="/panelAdmin" v-if="nivel == 1">Administrar Casas</router-link>
+          </li>
           <hr class="text-white my-3">
           <li class="nav-item">
             <a class="text-white fs-5" @click="cerrarSesion">Cerrar Sesión</a>
@@ -91,7 +91,6 @@
   <div v-if="(search !== '' && casas.length !== 0)">
     <ul class="cards container d-flex align-items-center flex-column gap-5 mt-5 mt-5">
       <div v-for="casa in casas" :key="casa.id_casa">
-        <div class="d-flex justify-content-end borra-casa" v-if="id_user==1"  @click="borrarCasa(casa.id_casa)">x</div>
         <router-link @click="search=''" :to="{name:'casaLogin',params:{id:casa.id_casa, nombre: casa.nombre}}"><li class="elemento py-2 px-4" >{{ casa.nombre }}</li></router-link>
       </div>
     </ul>
@@ -125,6 +124,7 @@ const router = useRouter();
 const cerrarSesion = ()=>{
   localStorage.removeItem('userId');
   localStorage.removeItem('userName');
+  router.go('/login');
   router.go(0);
 }
 
@@ -133,21 +133,7 @@ let search = ref('');
 let casas = ref([]);
 let iniciales = ref('')
 
-const borrarCasa = async(id)=>{
-  let data = {
-    id_casa: id
-  }
-  console.log(data);
-  const response = await fetch("http://localhost:4000/borrarCasa",{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
-        console.log(response);
-        router.go(0);
-}
+const nivel = localStorage.getItem('level');
 
 watch(()=>search.value, async (newValue)=>{
   try {
@@ -155,6 +141,7 @@ watch(()=>search.value, async (newValue)=>{
         let data = {
           nombre: newValue
         };
+
         const response = await fetch("http://localhost:4000/searchCasas", {
           method: 'POST',
           headers: {
@@ -164,9 +151,10 @@ watch(()=>search.value, async (newValue)=>{
         });
         const fetchedCasas = await response.json();
 
-        let idCasas = casas_usuario.map(obj =>obj.id_casa);
+        let idCasas = casas_usuario.map(obj => obj.id_casa);
 
         casas.value = fetchedCasas.filter(obj => !idCasas.includes(obj.id_casa));
+
     }
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -180,41 +168,34 @@ watch(()=>localStorage.getItem('userId'), (newValue)=>{
 })
 
 onMounted(async()=>{
-  if(localStorage.getItem('userId')!==null){
-    try {
-    let data = {
-      id_user: id_user
-    };
-
     let nombre = localStorage.getItem('userName');
     iniciales.value = nombre.substring(0, 2);
 
-
-
-    const response = await fetch("http://localhost:4000/listaCasas", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    const fetchedCasas = await response.json();
-    casas_usuario = fetchedCasas;
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    try{
+      let datos = {
+          id: id_user.value
+        };
+        const respuesta = await fetch("http://localhost:4000/casasUsuario", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+        });
+        casas_usuario = await respuesta.json();
+    }catch(err){
+      console.error("Error fetching data:", err);
     }
-  }
 });
 
 
 </script>
 
 <style lang="scss" scoped>
-.borra-casa{
-  color: red;
-  cursor: pointer;
-}
 .vista{
+  min-height: 630px;
+}
+.container{
   min-height: 630px;
 }
 .profile-picture {

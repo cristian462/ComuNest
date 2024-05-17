@@ -59,6 +59,7 @@ let user = ref({
 		} else if(respuesta.login == 1){
 			localStorage.setItem('userId', respuesta.usuario.id_user);
 			localStorage.setItem('userName', respuesta.usuario.nombre);
+			localStorage.setItem('level', respuesta.usuario.nivel);
 			router.go(0);
 		}
 	}catch(err){

@@ -3,19 +3,21 @@
     <h1 class="d-flex justify-content-center" style="font-size: 2.9rem">{{nombre_casa}}</h1>
     <div><router-link :to="{name: 'mesNuevo', params:{id: id_casa.id_casa}}"><button class="btn btn-primary">+</button></router-link></div>
 
-    <div class="contenedor-cards">
-      <div v-for="mes in meses" :key="mes.id_mes">
-        <router-link :to="{name: 'gastos', params: {id_mes: mes.id_mes, nombre: mes.nombre, resuelto: mes.resuelto, id_casa: id_casa.id_casa}}">
-          <div class="card px-5 py-2 pt-3 d-flex flex-row justify-content-between" :class="mes.resuelto ? `si-resuelto border-success` : `border-danger no-resuelto`">
-            <h2 class="pr-5">{{ mes.nombre }}</h2>
-            <div>
-              <h4>Total: {{ mes.total }}</h4>
-              <small class="secondary-text d-flex justify-content-end" v-if="!mes.resuelto">No resuelto</small>
-              <small class="secondary-text d-flex justify-content-end" v-else>Resuelto</small>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4" v-for="mes in meses" :key="mes.id_mes">
+                <div class="card">
+                  <router-link :to="{name: 'gastos', params: {id_mes: mes.id_mes, nombre: mes.nombre, resuelto: mes.resuelto, id_casa: id_casa.id_casa}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ mes.nombre }}</h5>
+                        <p class="card-text">Total: {{ mes.total }}€</p>
+                        <p class="card-status text-danger" v-if="!mes.resuelto">No Resuelto</p>
+                        <p class="card-status text-success" v-else>Resuelto</p>
+                    </div>
+                  </router-link>
+                </div>
             </div>
-          </div>
-        </router-link>
-    </div>
+      </div>
     </div>
     <h4 class="atras" @click="volverAtras()">&lt;&lt; Volver</h4>
   </div>
@@ -69,20 +71,10 @@ onMounted(async()=>{
     color: blue;
   }
 
-  .contenedor-cards{
-    display: flex;
-    flex-direction: row;
-    gap: 25px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
  .card{
     transition: transform 0.3s ease;
-    flex-grow: 1; 
-    min-width: 408px; 
-    border: 2px solid black;
   }
+
   a{
     text-decoration: none !important;
     color: black !important;
@@ -91,20 +83,13 @@ onMounted(async()=>{
     cursor: pointer;
     transform: scale(1.03);
   }
-  .no-resuelto{
-    background-color: rgba(255, 0, 0, 0.1) !important;
-  }
 
-  .si-resuelto{
-    background-color: rgba(0, 255, 0, 0.1) !important;
-  }
-
-  @media(width<652px){
+  /* @media(width<652px){
     .card{
       min-width: 200px;
     }
     .contenedor-cards{
       flex-direction: column !important;
     }
-  }
+  } */
 </style>

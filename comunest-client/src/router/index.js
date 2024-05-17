@@ -8,6 +8,8 @@ import MesNuevo from '../views/MesNuevo.vue'
 import CasaLoginView from '../views/CasaLoginView.vue'
 import GastosView from '../views/GastosView.vue'
 import GastoNuevoView from '../views/GastoNuevoView.vue'
+import PanelAdminView from '../views/PanelAdminView.vue'
+import CasaDetailView from '../views/CasaDetailView.vue'
 
 const routes = [
   {
@@ -54,6 +56,16 @@ const routes = [
     path: '/gastoNuevo/:id_mes/:id_casa',
     name: 'gastoNuevo',
     component: GastoNuevoView
+  },
+  {
+    path: '/panelAdmin',
+    name: 'panelAdmin',
+    component: PanelAdminView
+  },
+  {
+    path: '/casaDetail/:id/:nombre',
+    name: 'casaDetail',
+    component: CasaDetailView
   }
 ]
 

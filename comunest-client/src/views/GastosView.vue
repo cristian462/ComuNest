@@ -17,12 +17,12 @@
       </tr>
     </thead>
 	<tbody>
-      <tr v-for="gasto in gastos" :key="gasto.id">   
+      <tr v-for="gasto in gastos" :key="gasto.id_gasto">   
         <td>{{ gasto.nombre }}</td>
         <td>{{ gasto.descripcion }}</td>
-        <td>{{ gasto.importe }}</td>
+        <td>{{ gasto.importe }}€</td>
         <td>{{ gasto.nombre_user }}</td>
-        <td v-if="resuelto == 0"><button @click="deleteRow(gasto.id)" class="delete-btn">X</button></td>
+        <td v-if="resuelto == 0"><button @click="deleteRow(gasto.id_gasto)" class="delete-btn">X</button></td>
       </tr>
 	</tbody>
   </table>
@@ -69,6 +69,7 @@ const deleteRow = async(id)=>{
   let data = {
     id: id
   };
+  console.log(data);
   const response = await fetch('http://localhost:4000/borrarGasto', {
           method: 'POST',
           headers: {

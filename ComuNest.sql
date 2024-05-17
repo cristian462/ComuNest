@@ -12,6 +12,7 @@ CREATE TABLE usuario (
         nombre VARCHAR(30),
         email VARCHAR(40),
         pass VARCHAR(100),
+        nivel TINYINT
 );
 
 

@@ -98,7 +98,7 @@ const submit = async()=>{
 		id_mes: route.params.id_mes
 	};
 
-	console.log(data);
+
 	try{
 		const response = await fetch('http://localhost:4000/gastoNuevo', {
           method: 'POST',
