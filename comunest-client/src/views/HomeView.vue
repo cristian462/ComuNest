@@ -28,7 +28,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 
-
 const data = {
   id_user: localStorage.getItem('userId') == null ? 0 : localStorage.getItem('userId')
 };
