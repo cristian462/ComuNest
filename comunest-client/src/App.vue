@@ -102,7 +102,7 @@
 
 
 
-  <footer class="py-3 mt-4 text-bg-dark">
+  <footer class="py-5 mt-4 text-bg-dark">
     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
       <li class="nav-item"><router-link to="/" class="nav-link px-2 text-white">Inicio</router-link></li>
       <li class="nav-item"><a href="mailto:correo@ejemplo.com" class="nav-link px-2 text-white">Correo Electrónico</a></li>
@@ -193,10 +193,10 @@ onMounted(async()=>{
 
 <style lang="scss" scoped>
 .vista{
-  min-height: 630px;
+  min-height: 650px;
 }
 .container{
-  min-height: 630px;
+  min-height: 650px;
 }
 .profile-picture {
   width: 50px;

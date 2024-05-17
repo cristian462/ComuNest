@@ -8,7 +8,7 @@
         <div id="integrantes-list">
             <div class="integrante" v-for="integrante in integrantes" :key="integrante.id_user">
                 <span>{{ integrante.nombre }}</span>
-                <button class="delete-btn" @click="borrarIntegrante(integrante.id_user)">&times;</button>
+				<button class="delete-btn" @click="borrarIntegrante(integrante.id_user)">&times;</button>
             </div>
         </div>
 	</div>
@@ -35,13 +35,14 @@
 			id_casa: route.params.id,
 			id_user: id
 		};
-		await fetch('http://localhost:4000/borrarIntegrante',{
+		const response = await fetch('http://localhost:4000/borrarIntegrante',{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(data)
 		});
+		console.log(await response.json());
 		router.go(0);
 	}
 
@@ -83,11 +84,12 @@
         .delete-btn {
             background: none;
             border: none;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #ff0000;
         }
 
         .delete-btn:hover {
             color: #d9534f;
+			transform: scale(1.05);
         }
 </style>

@@ -22,7 +22,7 @@
         <td>{{ gasto.descripcion }}</td>
         <td>{{ gasto.importe }}€</td>
         <td>{{ gasto.nombre_user }}</td>
-        <td v-if="resuelto == 0"><button @click="deleteRow(gasto.id_gasto)" class="delete-btn">X</button></td>
+        <td v-if="resuelto == 0"><button @click="deleteRow(gasto.id_gasto)" class="delete-btn" v-if="userName === gasto.nombre_user" >&times;</button></td>
       </tr>
 	</tbody>
   </table>
@@ -42,6 +42,8 @@ const id_mes = route.params.id_mes;
 const nombre_mes = ref(route.params.nombre);
 const resuelto = ref(route.params.resuelto);
 const id_casa = route.params.id_casa;
+const userName = ref(localStorage.getItem('userName'));
+
 
 const volverAtras = ()=>{
     router.go(-1);
@@ -51,6 +53,7 @@ const resolver = async()=>{
 	let data = {
 		id_mes: id_mes
 	}
+
 	const response = await fetch('http://localhost:4000/resolver', {
           method: 'POST',
           headers: {
@@ -136,17 +139,15 @@ onMounted(async()=>{
 }
 
 .delete-btn {
-  padding: 8px 12px;
-  background-color: #ff5f5f;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #ff0000;
 }
 
 .delete-btn:hover {
-  background-color: #e74c3c;
+  color: #d9534f;
+  transform: scale(1.05);
 }
 
 .atras{
