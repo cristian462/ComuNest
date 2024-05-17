@@ -392,18 +392,16 @@ controller.borrarIntegrante = async(req,res)=>{
 		db.query(`
 				DELETE FROM casa_user
 				WHERE id_casa = ? AND id_user = ?;
-			`,[id_casa, id_user],(err,rows)=>{
-			if(err){
-				res.status(404);
-			}else{
-				res.status(200);
-			} 
-		});
+			`,[id_casa, id_user]);
+		db.query(`
+				DELETE FROM gasto
+				WHERE id_casa = ? AND id_user = ?;
+				`,[id_casa, id_user]);
 	}catch(err){
 		console.error('Error al buscar casas:', err);
 		res.status(500).json({ err: 'Error interno del servidor' });
 	}
-}
+};
 
 controller.casasUsuario = async(req,res)=>{
 	try{
@@ -421,6 +419,6 @@ controller.casasUsuario = async(req,res)=>{
 		console.error('Error al buscar casas:', err);
 		res.status(500).json({ err: 'Error interno del servidor' });
 	}
-}
+};
 
 module.exports = controller;

@@ -43,7 +43,7 @@
 			body: JSON.stringify(data)
 		});
 		console.log(await response.json());
-		router.go(0);
+		router.go(-1);
 	}
 
 	onMounted(async ()=>{

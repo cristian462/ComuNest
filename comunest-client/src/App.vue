@@ -124,8 +124,8 @@ const router = useRouter();
 const cerrarSesion = ()=>{
   localStorage.removeItem('userId');
   localStorage.removeItem('userName');
-  router.go('/login');
   router.go(0);
+  router.push('/login');
 }
 
 let casas_usuario = [];
