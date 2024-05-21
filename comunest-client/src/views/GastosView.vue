@@ -17,7 +17,7 @@
       </tr>
     </thead>
 	<tbody>
-      <tr v-for="gasto in gastos" :key="gasto.id_gasto">   
+      <tr v-for="gasto in gastos" :key="gasto.id_gasto">
         <td>{{ gasto.nombre }}</td>
         <td>{{ gasto.descripcion }}</td>
         <td>{{ gasto.importe }}€</td>
@@ -54,7 +54,7 @@ const resolver = async()=>{
 		id_mes: id_mes
 	}
 
-	const response = await fetch('http://localhost:4000/resolver', {
+	const response = await fetch('https://comunestapi.ddns.net/resolver', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ const deleteRow = async(id)=>{
     id: id
   };
   console.log(data);
-  const response = await fetch('http://localhost:4000/borrarGasto', {
+  const response = await fetch('https://comunestapi.ddns.net/borrarGasto', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -94,7 +94,7 @@ onMounted(async()=>{
 		id_mes: id_mes
 	};
 
-	const response = await fetch('http://localhost:4000/gastos', {
+	const response = await fetch('https://comunestapi.ddns.net/gastos', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

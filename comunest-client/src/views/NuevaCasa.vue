@@ -84,7 +84,7 @@ if (!newValue) {
     let data = {
         nombre: newValue
     };
-    const request = await fetch('http://localhost:4000/compruebaCasa',{
+    const request = await fetch('https://comunestapi.ddns.net/compruebaCasa',{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ if (!newValue) {
         nombrevacio.value = "El nombre ya existe";
         nombremal.value = "is-invalid";
     }
-  
+
 }
 });
 
@@ -118,15 +118,15 @@ const submit = async ()=>{
 
     try{
       const jsonData = {
-        "id_user": casa.value.id_user, 
-        "nombre": casa.value.nombre, 
+        "id_user": casa.value.id_user,
+        "nombre": casa.value.nombre,
         "pass": casa.value.pass1
       };
        const formData = new FormData();
-       
+
        formData.append('datos',JSON.stringify(jsonData));
 
-      const response = await fetch('http://localhost:4000/nuevaCasa',{
+      const response = await fetch('https://comunestapi.ddns.net/nuevaCasa',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -147,7 +147,7 @@ const submit = async ()=>{
 				id_user: localStorage.getItem('userId')
 			}
             console.log(data.id_casa);
-			const createMonth = await fetch("http://localhost:4000/nuevoMes", {
+			const createMonth = await fetch("https://comunestapi.ddns.net/nuevoMes", {
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'

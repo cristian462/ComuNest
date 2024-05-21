@@ -142,7 +142,7 @@ watch(()=>search.value, async (newValue)=>{
           nombre: newValue
         };
 
-        const response = await fetch("http://localhost:4000/searchCasas", {
+        const response = await fetch("https://comunestapi.ddns.net/searchCasas", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -175,7 +175,7 @@ onMounted(async()=>{
       let datos = {
           id: id_user.value
         };
-        const respuesta = await fetch("http://localhost:4000/casasUsuario", {
+        const respuesta = await fetch("https://comunestapi.ddns.net/casasUsuario", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

@@ -37,7 +37,7 @@ const casas = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await fetch("http://localhost:4000/listaCasas", {
+    const response = await fetch("https://comunestapi.ddns.net/listaCasas", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ onMounted(async () => {
 </script>
 
 <style scopded>
-  
+
   .link{
     color: blue;
     text-decoration-line: underline;

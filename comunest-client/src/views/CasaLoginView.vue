@@ -6,7 +6,7 @@
       <label class="pb-2" for="password">Contraseña:</label>
       <input type="password" id="password" v-model="pass" class="form-control " :class="mal">
     </div>
-	
+
 	<button type="submit" @click="submit">Enviar</button>
     <div class="integrantes">
       <h3>Integrantes:</h3>
@@ -24,7 +24,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-	
+
 	const route = useRoute();
 	const router = useRouter();
 	const integrantes = ref([]);
@@ -45,7 +45,7 @@ import { ref, onMounted } from 'vue';
 				id_casa: route.params.id,
 				pass: pass.value
 			};
-			const response = await fetch('http://localhost:4000/casaLogin',{
+			const response = await fetch('https://comunestapi.ddns.net/casaLogin',{
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
@@ -65,14 +65,14 @@ import { ref, onMounted } from 'vue';
 		}
 	};
 
-	
+
 
 	onMounted(async()=>{
 		try{
 			let data = {
 			id_casa: route.params.id
 			};
-			const response = await fetch('http://localhost:4000/compruebaUsers',{
+			const response = await fetch('https://comunestapi.ddns.net/compruebaUsers',{
 				method: 'POST',
 				headers: {
 				'Content-Type': 'application/json'
@@ -84,7 +84,7 @@ import { ref, onMounted } from 'vue';
 			mal = 'is-invalid';
 		}
 	});
-		
+
 
 </script>
 

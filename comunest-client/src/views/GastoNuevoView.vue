@@ -69,7 +69,7 @@ watch(()=>form.value.importe,(newValue)=>{
 			form_invalid.value.importe = '';
 			mensaje_mal.value.importe = '';
 		}
-		
+
 	}
 });
 
@@ -100,7 +100,7 @@ const submit = async()=>{
 
 
 	try{
-		const response = await fetch('http://localhost:4000/gastoNuevo', {
+		const response = await fetch('https://comunestapi.ddns.net/gastoNuevo', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -116,7 +116,7 @@ const submit = async()=>{
 	}catch(err){
       console.log(err);
     }
-	
+
 }
 
 

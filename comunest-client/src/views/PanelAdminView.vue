@@ -22,7 +22,7 @@
 <script setup>
 	import { useRouter } from "vue-router";
 	import { onMounted, ref } from 'vue';
-	
+
 	const router = useRouter();
 
 	const volverAtras = ()=>{
@@ -33,7 +33,7 @@
 
 	const borrarCasa = async(id)=>{
 		let data = {id_casa: id}
-		const response = await fetch("http://localhost:4000/borrarCasa",{
+		const response = await fetch("https://comunestapi.ddns.net/borrarCasa",{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -45,7 +45,7 @@
 	}
 
 	onMounted(async()=>{
-		const response =await fetch('http://localhost:4000/allCasas');
+		const response =await fetch('https://comunestapi.ddns.net/allCasas');
 
 		const respuesta = await response.json();
 		casas.value = respuesta;

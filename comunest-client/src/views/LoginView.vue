@@ -42,7 +42,7 @@ let user = ref({
 			"email": user.value.correo,
 			"pass": user.value.pass
 		}
-		const response = await fetch('http://localhost:4000/login',{
+		const response = await fetch('https://comunestapi.ddns.net/login',{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

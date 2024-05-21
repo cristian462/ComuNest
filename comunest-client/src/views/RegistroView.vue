@@ -65,7 +65,7 @@ import { useRouter } from "vue-router";
   let nombremal = ref("");
   let correomal = ref("");
   let msjcorreo = ref("");
-  
+
 
     watch(() => user.value.pass1, (newValue) => {
     if (!regex.test(newValue)) {
@@ -125,15 +125,15 @@ import { useRouter } from "vue-router";
 
     try{
       const jsonData = {
-        "nombre": user.value.nombre, 
-        "email": user.value.correo, 
+        "nombre": user.value.nombre,
+        "email": user.value.correo,
         "pass": user.value.pass1
       };
        const formData = new FormData();
-       
+
        formData.append('datos',JSON.stringify(jsonData));
 
-      const response = await fetch('http://localhost:4000/registro',{
+      const response = await fetch('https://comunestapi.ddns.net/registro',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

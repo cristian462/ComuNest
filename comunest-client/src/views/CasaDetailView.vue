@@ -19,7 +19,7 @@
 <script setup>
 	import { onMounted, ref } from "vue";
 	import { useRouter, useRoute } from "vue-router";
-	
+
 	const router = useRouter();
 	const route = useRoute();
 
@@ -35,7 +35,7 @@
 			id_casa: route.params.id,
 			id_user: id
 		};
-		const response = await fetch('http://localhost:4000/borrarIntegrante',{
+		const response = await fetch('https://comunestapi.ddns.net/borrarIntegrante',{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -51,7 +51,7 @@
 			id_casa: route.params.id
 		};
 
-		const response = await fetch('http://localhost:4000/listaIntegrantes',{
+		const response = await fetch('https://comunestapi.ddns.net/listaIntegrantes',{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

@@ -50,7 +50,7 @@ const router = useRouter();
 
 onMounted(async()=>{
 	try {
-    const response = await fetch("http://localhost:4000/casa", {
+    const response = await fetch("https://comunestapi.ddns.net/casa", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
